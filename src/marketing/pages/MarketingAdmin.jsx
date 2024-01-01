@@ -53,6 +53,14 @@ const MarketingAdmin = () => {
           >
             Callers
           </h4>
+          <h4
+            className={` py-1.5 px-5 rounded-md hover:bg-primary hover:text-white duration-300 cursor-pointer ${
+              tab === 2 ? 'bg-primary text-white' : 'bg-gray-200'
+            }`}
+            onClick={() => setTab(2)}
+          >
+            User
+          </h4>
         </div>
         {loading ? (
           <TableLoader />
