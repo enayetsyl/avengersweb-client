@@ -25,3 +25,9 @@ export const addData = async (name,
     throw error;
   }
 };
+
+export const updateUserRole = async(id, role) => {
+  console.log('from function', id, role)
+  const result = await axios.patch(`http://localhost:5000/api/v1/userRoleChange/${id}`, role) 
+  return result.data
+}
