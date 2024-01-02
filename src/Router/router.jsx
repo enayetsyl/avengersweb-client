@@ -34,25 +34,25 @@ const router = createBrowserRouter([
       {
         path: '/marketing',
         element: (
-          // <PrivateRoute>
+          <PrivateRoute allowedRoles={['marketingAdmin']}>
           <MarketingAdmin />
-          // </PrivateRoute>
+          </PrivateRoute>
         ),
       },
       {
         path: '/marketing/lead-collector',
         element: (
-          // <PrivateRoute>
+           <PrivateRoute allowedRoles={['LeadCollector']}>
             <LeadCollector />
-          // </PrivateRoute>
+           </PrivateRoute>
         ),
       },
       {
         path: '/marketing/caller',
         element: (
-          // <PrivateRoute>
+          <PrivateRoute allowedRoles={['LeadCollector']}>
             <Caller />
-          // </PrivateRoute>
+          </PrivateRoute>
         ),
       },
     ],

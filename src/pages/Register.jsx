@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
@@ -7,6 +7,7 @@ import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
 import Loader from '../components/common/Loader';
 import { addData } from '../lib/getfunction';
+import { AuthContext } from '../Provider/AuthProvider';
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -14,10 +15,10 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [conPassword, setConPassword] = useState('');
   const [pic, setPic] = useState();
-  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConPassword, setShowConPassword] = useState(false);
   const navigate = useNavigate();
+  const {loading, setLoading, createUser} = useContext(AuthContext)
 
   // const postDetails = (pic) => {
   //   setLoading(true);
@@ -110,6 +111,12 @@ const Register = () => {
       } else {
 
         try {
+          // createUser(email, password)
+          // .then(result => {
+          //   if(result.user){
+          //     console.log('from firebase',result.user)
+          //   }
+          // })
           await mutateAsync({name, email, password});
         } catch (error) {
           toast.warning('Failed To Create User!');

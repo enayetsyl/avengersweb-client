@@ -21,7 +21,7 @@ const LeadCollector = () => {
           <TableLoader />
         ) : (
           <>
-            {data.length === 0 ? (
+            {data?.length === 0 ? (
               <p className="text-center text-xl font-semibold">No Data Found</p>
             ) : (
               <Table striped className="relative">

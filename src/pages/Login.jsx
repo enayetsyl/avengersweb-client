@@ -1,44 +1,50 @@
-import { useState } from 'react';
-import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { useMutation } from '@tanstack/react-query';
+import { useContext, useState } from "react";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { loginUser } from "../lib/getfunction";
+import { AuthContext } from "../Provider/AuthProvider";
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
-
   const navigate = useNavigate();
-
-  const addData = async () => {
-    try {
-      const result = await axios.post(`http://localhost:5000/user/login`, {
-        email,
-        password,
-      });
-      console.log(result);
-      return result;
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  };
+  // const addData = async () => {
+  //   try {
+  //     const result = await axios.post(`http://localhost:5000/user/login`, {
+  //       email,
+  //       password,
+  //     });
+  //     console.log(result);
+  //     return result;
+  //   } catch (error) {
+  //     console.log(error);
+  //     throw error;
+  //   }
+  // };
 
   // eslint-disable-next-line no-unused-vars
-  const { data, mutateAsync } = useMutation({
-    mutationFn: addData,
-    onSuccess: (data) => {
-      localStorage.setItem('userInfo', JSON.stringify(data.data));
-      toast.success('Login Successful!');
-      setLoading(false);
-      navigate('/');
-      window.location.reload();
-    },
-  });
+  // const { data, mutateAsync } = useMutation({
+  //   mutationFn: addData,
+  //   onSuccess: (data) => {
+  //     localStorage.setItem('userInfo', JSON.stringify(data.data));
+  //     toast.success('Login Successful!');
+  //     setLoading(false);
+  //     navigate('/');
+  //     window.location.reload();
+  //   },
+  // });
+
+  // const {data, error} = useQuery({
+  //   queryKey:['loginUser'],
+  //   queryFn:() => loginUser(email, password),
+  //   enabled: false,
+  // })
+
+  const { loading, user, setUser, setLoading, signInUser } =
+    useContext(AuthContext);
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
@@ -46,13 +52,33 @@ const Login = () => {
 
     if (email && password) {
       try {
-        await mutateAsync();
+        const result = await loginUser(email, password);
+        console.log(result.data);
+
+        if (result.data.message === "Login Successful") {
+          const serverData = result.data.userInfo;
+          sessionStorage.setItem("userInfo", JSON.stringify(serverData));
+
+          toast.success("Login Successful!");
+          setLoading(false);
+          if (result.data.userInfo.role === "LeadCollector") {
+            navigate("/marketing/lead-collector");
+          } else if (result.data.userInfo.role === "Caller") {
+            navigate("/marketing/caller");
+          } else {
+            navigate("/");
+          }
+        } else if (result.data === "Incorrect Password") {
+          toast.success("Incorrect Password. Try again Late");
+          setLoading(false);
+          console.log(result.data);
+        }
       } catch (error) {
-        toast.warning('Failed To Log in!');
+        toast.warning("Failed To Log in!");
         setLoading(false);
       }
     } else {
-      toast.warning('Please Fill all the fields!');
+      toast.warning("Please Fill all the fields!");
       setLoading(false);
     }
   };
@@ -77,7 +103,7 @@ const Login = () => {
             />
             <div className="relative">
               <input
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -97,7 +123,7 @@ const Login = () => {
             <button
               type="submit"
               className={`bg-cyan-500 hover:bg-cyan-600 text-white py-4 px-6 w-full rounded-md uppercase duration-300 leading-none font-bold text-lg ${
-                loading && 'cursor-not-allowed opacity-50'
+                loading && "cursor-not-allowed opacity-50"
               }`}
             >
               Log In
@@ -106,8 +132,8 @@ const Login = () => {
               type="submit"
               className="bg-rose-500 hover:bg-teal-600 text-white py-4 px-6 w-full rounded-md uppercase duration-300 leading-none font-bold text-lg"
               onClick={() => {
-                setEmail('demo@gmail.com');
-                setPassword('123456');
+                setEmail("demo@gmail.com");
+                setPassword("123456");
               }}
             >
               Guest Login
