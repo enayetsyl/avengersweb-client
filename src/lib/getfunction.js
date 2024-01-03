@@ -1,8 +1,8 @@
 import axios from "axios"
 
-export const getAllLeads = async() => {
+export const getSingleUserLeads = async(email) => {
   {
-    const response = await axios.get(`http://localhost:5000/api/v1/allLeads`)
+    const response = await axios.get(`http://localhost:5000/api/v1/singleUserLeads?email=${email}`)
     return response.data
   }
 }

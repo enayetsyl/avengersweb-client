@@ -1,14 +1,18 @@
 import { Table } from 'flowbite-react';
 import { FaTrash } from 'react-icons/fa';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import TableLoader from '../../components/common/TableLoader';
 import { useQuery } from '@tanstack/react-query';
-import { getAllLeads } from '../../lib/getfunction';
+import { getSingleUserLeads } from '../../lib/getfunction';
+import { AuthContext } from '../../Provider/AuthProvider';
 
 const LeadCollector = () => {
+  const {user} = useContext(AuthContext)
+  const userEmail = user.email;
+  console.log(userEmail)
   const {data, isLoading} = useQuery({
     queryKey:['leadGet'],
-    queryFn: getAllLeads
+    queryFn: getSingleUserLeads
   })
 
   return (

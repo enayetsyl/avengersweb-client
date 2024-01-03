@@ -50,7 +50,7 @@ const router = createBrowserRouter([
       {
         path: '/marketing/caller',
         element: (
-          <PrivateRoute allowedRoles={['LeadCollector']}>
+          <PrivateRoute allowedRoles={['Caller']}>
             <Caller />
           </PrivateRoute>
         ),
