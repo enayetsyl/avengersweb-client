@@ -8,6 +8,12 @@ export const getSingleUserLeads = async(email) => {
   }
 }
 
+export const deleteLead = async (id) => {
+  console.log('delete id', id)
+  const result = await axios.delete(`http://localhost:5000/api/v1/deleteLead/${id}`)
+  console.log(result)
+  return result.data
+}
 
 export const addData = async (name,
   email,

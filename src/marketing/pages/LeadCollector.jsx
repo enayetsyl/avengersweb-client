@@ -2,11 +2,13 @@ import { Table } from 'flowbite-react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useContext, useState } from 'react';
 import TableLoader from '../../components/common/TableLoader';
-import { useQuery } from '@tanstack/react-query';
-import { getSingleUserLeads } from '../../lib/getfunction';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { deleteLead, getSingleUserLeads } from '../../lib/getfunction';
 import { AuthContext } from '../../Provider/AuthProvider';
+import { toast } from 'react-toastify';
 
 const LeadCollector = () => {
+  const queryClient = useQueryClient()  
   const {user} = useContext(AuthContext)
   const userEmail = user?.email;
   const {data, isLoading} = useQuery({
@@ -14,8 +16,21 @@ const LeadCollector = () => {
     queryFn:() => getSingleUserLeads(userEmail)
   })
 
-  const handleDelete = id => {
-    console.log(id)
+const {mutateAsync} = useMutation({
+  mutationFn: (id) => deleteLead(id),
+  onSuccess:(data) => {
+    console.log('from mutation function', data)
+    if(data.deletedCount > 0){
+      toast.success('Lead deleted successfully.')
+      queryClient.invalidateQueries(['individualLeadCollectorData'])
+    }else{
+      toast.warning('An error occurred. Try again')
+    }
+  }
+})
+
+  const handleDelete = async (id) => {
+    await mutateAsync(id)
   }
 
 console.log(data)

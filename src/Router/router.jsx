@@ -10,6 +10,10 @@ import PrivateRoute from './PrivateRoute';
 import MarketingAdmin from '../marketing/pages/MarketingAdmin';
 import LeadCollector from '../marketing/pages/LeadCollector';
 import Caller from '../marketing/pages/Caller';
+import AddLead from '../marketing/pages/AddLead';
+import EditLead from '../marketing/pages/EditLead';
+import AddCaller from '../marketing/pages/AddCaller';
+import EditCaller from '../marketing/pages/EditCaller';
 
 const router = createBrowserRouter([
   {
@@ -48,10 +52,42 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: '/marketing/lead-collector/add',
+        element: (
+          <PrivateRoute allowedRoles={['LeadCollector']}>
+          <AddLead />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: '/marketing/lead-collector/edit/:id',
+        element: (
+          <PrivateRoute allowedRoles={['LeadCollector']}>
+          <EditLead />
+          </PrivateRoute>
+        ),
+      },
+      {
         path: '/marketing/caller',
         element: (
           <PrivateRoute allowedRoles={['Caller']}>
             <Caller />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: '/marketing/caller/add',
+        element: (
+          <PrivateRoute allowedRoles={['Caller']}>
+          <AddCaller />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: '/marketing/caller/edit/:id',
+        element: (
+          <PrivateRoute allowedRoles={['Caller']}>
+          <EditCaller />
           </PrivateRoute>
         ),
       },
