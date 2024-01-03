@@ -9,6 +9,7 @@ const EditLead = () => {
   const {id} = useParams()
   const [loading, setLoading] = useState(false);
   const [newData, setNewData] = useState(null)
+  
   const {data} = useQuery({
     queryKey:['editLeadGetData',id ],
     queryFn:() =>  getEditLeadData(id),
@@ -39,6 +40,7 @@ const EditLead = () => {
     setNewData(newData)
     await mutateAsync(newData, id)
   };
+
   return (
     <div className="py-12">
       <div className="container mx-auto px-4">

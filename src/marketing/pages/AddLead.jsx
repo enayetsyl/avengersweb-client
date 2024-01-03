@@ -60,6 +60,7 @@ const AddLead = () => {
       toast.warning('Error occurred. Please logout and try again.')
     }
   };
+  
   return (
     <div className="py-12">
       <div className="container mx-auto px-4">

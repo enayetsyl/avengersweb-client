@@ -6,6 +6,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { updateUserRole } from '../../lib/getfunction';
+import LeadCollectorTable from '../components/LeadCollectorTable';
 
 const dummyDataLead = [
   {
@@ -33,11 +34,14 @@ const MarketingAdmin = () => {
   const [tab, setTab] = useState(0)
   const [role, setRole] = useState({})
   const queryClient = useQueryClient()
- const {data, isLoading, isError} = useQuery({
+ 
+  // Fetching data
+  const {data, isLoading, isError} = useQuery({
   queryKey:['marketingAdminDataFetch', tab],
   queryFn: ()=> fetchData(tab),
  })
 
+// Populating data based on tab clicked
  const fetchData = async(selectedTab) => {
   switch(selectedTab){
     case 0:
@@ -51,6 +55,9 @@ const MarketingAdmin = () => {
   }
  }
 
+ console.log(data)
+
+//  Sending data to server after changing role of user
  const { mutateAsync } = useMutation({
   mutationFn:({id, role}) => updateUserRole(id, role),
   onSuccess:(data) => {
@@ -64,6 +71,7 @@ const MarketingAdmin = () => {
   }
  })
 
+//  handler of the user role change
 const handleRoleChange = async (id) => {
   if(role){
     await mutateAsync({id, role})   
@@ -114,55 +122,56 @@ const handleRoleChange = async (id) => {
                    No Data Found
                  </p>
                ) : (
-                 <>
-                   <h2 className="text-2xl font-bold my-12">
-                     Lead Collectors:
-                   </h2>
-                   <Table striped className="relative">
-                     <Table.Head>
-                       <Table.HeadCell className="text-start">
-                         Name
-                       </Table.HeadCell>
-                       <Table.HeadCell className="text-start">
-                         Phone
-                       </Table.HeadCell>
-                       <Table.HeadCell className="text-start">
-                         FB Page Link
-                       </Table.HeadCell>
-                       <Table.HeadCell className="text-start">
-                         Conversion Stage
-                       </Table.HeadCell>
-                       <Table.HeadCell className="text-start">
-                         Reason For Not Conversion
-                       </Table.HeadCell>
-                       <Table.HeadCell className="text-start">
-                         Meeting Schedule
-                       </Table.HeadCell>
-                       <Table.HeadCell className="text-start">
-                         Edit
-                       </Table.HeadCell>
-                     </Table.Head>
-                     <Table.Body className="divide-y">
-                       {dummyDataLead?.map((item) => (
-                         <Table.Row className="bg-gray-100" key={item?._id}>
-                           <Table.Cell>{item.name}</Table.Cell>
-                           <Table.Cell className="whitespace-wrap font-bold  min-w-[200px]">
-                             {item.phone}
-                           </Table.Cell>
-                           <Table.Cell>{item.fbLink}</Table.Cell>
-                           <Table.Cell>{item.conversionStage}</Table.Cell>
-                           <Table.Cell className="max-w-[250px] whitespace-nowrap overflow-hidden overflow-ellipsis">
-                             {item.reason}
-                           </Table.Cell>
-                           <Table.Cell>{item.meeting}</Table.Cell>
-                           <Table.Cell>
-                             <FaEdit className="text-cyan-500 cursor-pointer" />
-                           </Table.Cell>
-                         </Table.Row>
-                       ))}
-                     </Table.Body>
-                   </Table>
-                 </>
+                //  <>
+                //    <h2 className="text-2xl font-bold my-12">
+                //      Lead Collectors:
+                //    </h2>
+                //    <Table striped className="relative">
+                //      <Table.Head>
+                //        <Table.HeadCell className="text-start">
+                //          Name
+                //        </Table.HeadCell>
+                //        <Table.HeadCell className="text-start">
+                //          Phone
+                //        </Table.HeadCell>
+                //        <Table.HeadCell className="text-start">
+                //          FB Page Link
+                //        </Table.HeadCell>
+                //        <Table.HeadCell className="text-start">
+                //          Conversion Stage
+                //        </Table.HeadCell>
+                //        <Table.HeadCell className="text-start">
+                //          Reason For Not Conversion
+                //        </Table.HeadCell>
+                //        <Table.HeadCell className="text-start">
+                //          Meeting Schedule
+                //        </Table.HeadCell>
+                //        <Table.HeadCell className="text-start">
+                //          Edit
+                //        </Table.HeadCell>
+                //      </Table.Head>
+                //      <Table.Body className="divide-y">
+                //        {dummyDataLead?.map((item) => (
+                //          <Table.Row className="bg-gray-100" key={item?._id}>
+                //            <Table.Cell>{item.name}</Table.Cell>
+                //            <Table.Cell className="whitespace-wrap font-bold  min-w-[200px]">
+                //              {item.phone}
+                //            </Table.Cell>
+                //            <Table.Cell>{item.fbLink}</Table.Cell>
+                //            <Table.Cell>{item.conversionStage}</Table.Cell>
+                //            <Table.Cell className="max-w-[250px] whitespace-nowrap overflow-hidden overflow-ellipsis">
+                //              {item.reason}
+                //            </Table.Cell>
+                //            <Table.Cell>{item.meeting}</Table.Cell>
+                //            <Table.Cell>
+                //              <FaEdit className="text-cyan-500 cursor-pointer" />
+                //            </Table.Cell>
+                //          </Table.Row>
+                //        ))}
+                //      </Table.Body>
+                //    </Table>
+                //  </>
+                <LeadCollectorTable data={data}/>
                )}
              </>
             )}
