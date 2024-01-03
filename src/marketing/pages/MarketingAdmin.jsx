@@ -1,6 +1,6 @@
 import { Table } from 'flowbite-react';
 import { FaEdit } from 'react-icons/fa';
-import { useEffect,  useState } from 'react';
+import { useEffect, useState } from 'react';
 import TableLoader from '../../components/common/TableLoader';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
@@ -28,52 +28,49 @@ const dummyDataLead = [
     time: '10:21AM',
   },
 ];
-const dummyCallerLead = [
-  {
-    name: 'Shafayet',
-    phone: '01638719578',
-    fbLink: 'https://facebook.com/avengers-web',
-    conversionStage: 'pending',
-    reason: 'lorem ipsum dolor sit amet.',
-    meeting: '10/11/23',
-    time: '10:21AM',
-  },
-  {
-    name: 'Shafayet',
-    phone: '01638719578',
-    fbLink: 'https://facebook.com/avengers-web',
-    conversionStage: 'pending',
-    reason:
-      'lorem ipsum dolor sit amet. lorem ipsum dolor sit amet.lorem ipsum dolor sit amet.lorem ipsum dolor sit amet.',
-    meeting: '10/11/23',
-    time: '10:21AM',
-  },
-];
-const dummyUserLead = [
-  {
-    name: 'Shafayet',
-    phone: '01638719578',
-    fbLink: 'https://facebook.com/avengers-web',
-    conversionStage: 'pending',
-    reason: 'lorem ipsum dolor sit amet.',
-    meeting: '10/11/23',
-    time: '10:21AM',
-  },
-  {
-    name: 'Shafayet',
-    phone: '01638719578',
-    fbLink: 'https://facebook.com/avengers-web',
-    conversionStage: 'pending',
-    reason:
-      'lorem ipsum dolor sit amet. lorem ipsum dolor sit amet.lorem ipsum dolor sit amet.lorem ipsum dolor sit amet.',
-    meeting: '10/11/23',
-    time: '10:21AM',
-  },
-];
 
 const MarketingAdmin = () => {
-  const [loading, setIsLoading] = useState(false);
-  const [tab, setTab] = useState(0);
+  const [tab, setTab] = useState(0)
+  const [role, setRole] = useState({})
+  const queryClient = useQueryClient()
+ const {data, isLoading, isError} = useQuery({
+  queryKey:['marketingAdminDataFetch', tab],
+  queryFn: ()=> fetchData(tab),
+ })
+
+ const fetchData = async(selectedTab) => {
+  switch(selectedTab){
+    case 0:
+      return axios.get('http://localhost:5000/api/v1/allLeads').then((response) => response.data)
+    case 1:
+      return axios.get('http://localhost:5000/api/v1/allCaller').then((response) => response.data)
+    case 2:
+      return axios.get('http://localhost:5000/api/v1/allUsers').then((response) => response.data)
+      default:
+        return []
+  }
+ }
+
+ const { mutateAsync } = useMutation({
+  mutationFn:({id, role}) => updateUserRole(id, role),
+  onSuccess:(data) => {
+    console.log(data)
+    if(data.modifiedCount > 0){
+      toast.success('Role updated Successfully')
+      queryClient.invalidateQueries(['marketingAdminDataFetch', tab])
+    }else{
+      toast.warning('An error occurred. Try again')
+    }
+  }
+ })
+
+const handleRoleChange = async (id) => {
+  if(role){
+    await mutateAsync({id, role})   
+  }else{
+    toast.warning('No role selected')
+  }
+}
 
   return (
     <div className="my-12 overflow-x-auto h-[700px] md:h-auto">

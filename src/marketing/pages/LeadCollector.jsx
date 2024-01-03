@@ -1,5 +1,5 @@
 import { Table } from 'flowbite-react';
-import { FaTrash } from 'react-icons/fa';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useContext, useState } from 'react';
 import TableLoader from '../../components/common/TableLoader';
 import { useQuery } from '@tanstack/react-query';
@@ -8,13 +8,17 @@ import { AuthContext } from '../../Provider/AuthProvider';
 
 const LeadCollector = () => {
   const {user} = useContext(AuthContext)
-  const userEmail = user.email;
-  console.log(userEmail)
+  const userEmail = user?.email;
   const {data, isLoading} = useQuery({
-    queryKey:['leadGet'],
-    queryFn: getSingleUserLeads
+    queryKey:['individualLeadCollectorData'],
+    queryFn:() => getSingleUserLeads(userEmail)
   })
 
+  const handleDelete = id => {
+    console.log(id)
+  }
+
+console.log(data)
   return (
     <div className="my-12 overflow-x-auto h-[700px] md:h-auto">
       <div className="container px-4 mx-auto">
@@ -48,6 +52,7 @@ const LeadCollector = () => {
                   <Table.HeadCell className="text-start">
                     Existing Website Link
                   </Table.HeadCell>
+                  <Table.HeadCell className="text-start">Edit</Table.HeadCell>
                   <Table.HeadCell className="text-start">Delete</Table.HeadCell>
                 </Table.Head>
                 <Table.Body className="divide-y">
@@ -65,7 +70,12 @@ const LeadCollector = () => {
                       <Table.Cell>{item.websiteAvailabe === true ? 'Yes' : 'No'}</Table.Cell>
                       <Table.Cell>{item.existingWebsiteLink}</Table.Cell>
                       <Table.Cell>
-                        <FaTrash className="text-red-500 cursor-pointer" />
+                        <FaEdit className="text-red-500 cursor-pointer" />
+                      </Table.Cell>
+                      <Table.Cell>
+                        <FaTrash className="text-red-500 cursor-pointer" 
+                        onClick={()=> handleDelete(item._id)}
+                        />
                       </Table.Cell>
                     </Table.Row>
                   ))}

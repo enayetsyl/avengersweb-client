@@ -2,6 +2,7 @@ import axios from "axios"
 
 export const getSingleUserLeads = async(email) => {
   {
+    console.log(email)
     const response = await axios.get(`http://localhost:5000/api/v1/singleUserLeads?email=${email}`)
     return response.data
   }
