@@ -7,12 +7,6 @@ const MarketingNav = () => {
   const [activeProfile, setActiveProfile] = useState(false);
   const {user, logOut} = useContext(AuthContext)
   const navigate = useNavigate()
-  console.log(user)
-  // console.log(isUser)
-  // useEffect(() => {
-  //   const userExists = JSON.parse(localStorage.getItem('userInfo'));
-  //   setIsUser(userExists);
-  // }, []);
 
   const logoutHandler = () => {
     logOut()

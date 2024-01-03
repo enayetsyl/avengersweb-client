@@ -1,21 +1,64 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Loader from '../../components/common/Loader';
 import { toast } from 'react-toastify';
+import { AuthContext } from '../../Provider/AuthProvider';
+import { useMutation } from '@tanstack/react-query';
+import { addLeadData } from '../../lib/getfunction';
+import { useNavigate } from 'react-router';
 
 const AddLead = () => {
   const [loading, setLoading] = useState(false);
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [fbLink, setFbLink] = useState('');
-  const [email, setEmail] = useState('');
-  const [bType, setBType] = useState('');
-  const [webLink, setWebLink] = useState('');
+  const {user} = useContext(AuthContext)
+  const navigate = useNavigate()
+  const entryBy = user?.email;
+  const [userData, setUserData] = useState({
+    businessName: '',
+    facebookAddress:'',
+    mobileNumber:'',
+    facebookPageName:'',
+    businessType:'',
+    websiteAvailable:false,
+    email:'',
+    existingWebsiteLink:'',
+  })
+  
+  const otherField = {
+    firstCallDate: '', 
+    firstMeetingDate: '',
+    converted: false,
+    reasonForNonConversion: '',
+    websiteCreation: '',
+    ourCreatedWebsiteLink: '',
+    messageSentAtFirstApproach: '',
+    marketingMessageSent: false,
+  }
+  const newLeadData = {...userData, ...otherField, entryBy}
 
+  const {mutateAsync} = useMutation({
+    mutationFn:(newLeadData) => addLeadData(newLeadData),
+    onSuccess:(data)=>{
+      console.log(data)
+      toast.success('Data added successfully.')
+      setLoading(false)
+      navigate('/marketing/lead-collector')
+    }
+  })
+
+  const handleInputchange = (e) => {
+    const {name, value, type, checked} = e.target;
+    const inputValue = type === 'checkbox' ? checked : value;
+    return setUserData((prevInfo) => ({
+      ...prevInfo, [name] : inputValue
+    }))
+  }
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setLoading(true);
-    toast.success('Lead successfully added!');
+    if(entryBy){
+      await mutateAsync(newLeadData)
+    } else{
+      toast.warning('Error occurred. Please logout and try again.')
+    }
   };
   return (
     <div className="py-12">
@@ -29,53 +72,53 @@ const AddLead = () => {
         >
           {/* input group */}
           <div className="flex flex-col md:flex-row gap-4 justify-between mb-6">
-            {/* name */}
+            {/* Business name */}
             <div className=" flex flex-col gap-y-3 w-full md:w-1/2">
-              <label htmlFor="name" className="form-label">
-                Page Name
+              <label htmlFor="businessName" className="form-label">
+              Business name
               </label>
               <input
                 type="text"
-                placeholder="Page name"
-                name="name"
+                placeholder="Business name"
+                name="businessName"
                 className="input-with-shadow"
                 required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={userData.businessName}
+                onChange={handleInputchange}
               />
             </div>
-            {/* phone */}
+            {/* Facebook address */}
             <div className="flex flex-col gap-y-3 w-full md:w-1/2">
-              <label htmlFor="phone" className="form-label">
-                Phone
+              <label htmlFor="facebookAddress" className="form-label">
+                Facebook Address
               </label>
               <input
-                type="tel"
-                placeholder="Phone"
+                type="facebook address"
+                placeholder="Facebook Address"
                 className="input-with-shadow"
-                name="phone"
+                name="facebookAddress"
                 required
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                value={userData.facebookAddress}
+                onChange={handleInputchange}
               />
             </div>
           </div>
 
           {/* input group */}
           <div className="flex flex-col md:flex-row gap-4 justify-between mb-6">
-            {/* fbLink */}
+            {/*   Mobile Number */}
             <div className=" flex flex-col gap-y-3 w-full md:w-1/2">
-              <label htmlFor="fbLink" className="form-label">
-                FB page Link
+              <label htmlFor="mobileNumber" className="form-label">
+                Mobile Number
               </label>
               <input
-                type="text"
-                placeholder="FB page Link"
-                name="fbLink"
+                type="tel"
+                placeholder="Mobile Number"
+                name="mobileNumber"
                 className="input-with-shadow"
                 required
-                value={fbLink}
-                onChange={(e) => setFbLink(e.target.value)}
+                value={userData.mobileNumber}
+                onChange={handleInputchange}
               />
             </div>
             {/* email */}
@@ -89,42 +132,75 @@ const AddLead = () => {
                 className="input-with-shadow"
                 name="email"
                 required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={userData.email}
+                onChange={handleInputchange}
               />
             </div>
           </div>
 
           {/* input group */}
           <div className="flex flex-col md:flex-row gap-4 justify-between mb-6">
-            {/* btype */}
-            <div className=" flex flex-col gap-y-3 w-full md:w-1/2">
-              <label htmlFor="btype" className="form-label">
-                Business Type
+          {/* Facebook Page Name */}
+          <div className="flex flex-col gap-y-3 w-full md:w-1/2">
+              <label htmlFor="facebookPageName" className="form-label">
+              Facebook Page Name
+              </label>
+              <input
+                type="text"
+                placeholder="Facebook Page Name"
+                className="input-with-shadow"
+                name="facebookPageName"
+                required
+                value={userData.facebookPageName}
+                onChange={handleInputchange}
+              />
+            </div>
+          {/* Business Type */}
+          <div className="flex flex-col gap-y-3 w-full md:w-1/2">
+              <label htmlFor="businessType" className="form-label">
+              Business Type
               </label>
               <input
                 type="text"
                 placeholder="Business Type"
-                name="btype"
                 className="input-with-shadow"
+                name="businessType"
                 required
-                value={bType}
-                onChange={(e) => setBType(e.target.value)}
+                value={userData.businessType}
+                onChange={handleInputchange}
               />
             </div>
+          </div>
+          {/* input group */}
+          <div className="flex flex-col md:flex-row gap-4 justify-between mb-6">
+         
             {/* Existing website Link */}
             <div className="flex flex-col gap-y-3 w-full md:w-1/2">
-              <label htmlFor="webLink" className="form-label">
+              <label htmlFor="existingWebsiteLink" className="form-label">
                 Existing website Link
               </label>
               <input
                 type="text"
                 placeholder="Existing website Link"
                 className="input-with-shadow"
-                name="webLink"
-                required
-                value={webLink}
-                onChange={(e) => setWebLink(e.target.value)}
+                name="existingWebsiteLink"
+                
+                value={userData.existingWebsiteLink}
+                onChange={handleInputchange}
+              />
+            </div>
+            {/* Website Available */}
+            <div className="flex flex-col gap-y-3 w-full md:w-1/2">
+              <label htmlFor="websiteAvailable" className="form-label">
+              Website Available
+              </label>
+              <input
+                type="checkbox"
+                className="input-with-shadow"
+                name="websiteAvailable"
+                
+                value={userData.websiteAvailable}
+                onChange={handleInputchange}
               />
             </div>
           </div>

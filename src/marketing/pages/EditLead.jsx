@@ -1,21 +1,43 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Loader from '../../components/common/Loader';
 import { toast } from 'react-toastify';
+import { useParams } from 'react-router';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { editLeadData, getEditLeadData } from '../../lib/getfunction';
 
 const EditLead = () => {
+  const {id} = useParams()
   const [loading, setLoading] = useState(false);
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [fbLink, setFbLink] = useState('');
-  const [email, setEmail] = useState('');
-  const [bType, setBType] = useState('');
-  const [webLink, setWebLink] = useState('');
+  const [newData, setNewData] = useState(null)
+  const {data} = useQuery({
+    queryKey:['editLeadGetData',id ],
+    queryFn:() =>  getEditLeadData(id),
+  })
+
+   const { mutateAsync } = useMutation({
+    mutationFn: () => editLeadData(newData, id),
+    onSuccess: (data) => {
+      console.log(data)
+      toast.success('Lead successfully edited!');
+      setLoading(false);
+    }
+  })
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setLoading(true);
-    toast.success('Lead successfully added!');
+    const newData = {
+      businessName: e.target.businessName.value,
+    facebookAddress:e.target.facebookAddress.value,
+    mobileNumber:e.target.mobileNumber.value,
+    facebookPageName:e.target.facebookPageName.value,
+    businessType:e.target.businessType.value,
+    websiteAvailable:e.target.websiteAvailable.checked,
+    email:e.target.email.value,
+    existingWebsiteLink:e.target.existingWebsiteLink.value
+    }
+    setNewData(newData)
+    await mutateAsync(newData, id)
   };
   return (
     <div className="py-12">
@@ -29,53 +51,50 @@ const EditLead = () => {
         >
           {/* input group */}
           <div className="flex flex-col md:flex-row gap-4 justify-between mb-6">
-            {/* name */}
+            {/* Business name */}
             <div className=" flex flex-col gap-y-3 w-full md:w-1/2">
-              <label htmlFor="name" className="form-label">
-                Page Name
+              <label htmlFor="businessName" className="form-label">
+              Business name
               </label>
               <input
                 type="text"
-                placeholder="Page name"
-                name="name"
+                placeholder="Business name"
+                name="businessName"
                 className="input-with-shadow"
                 required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                defaultValue={data?.businessName}
               />
             </div>
-            {/* phone */}
+            {/* Facebook address */}
             <div className="flex flex-col gap-y-3 w-full md:w-1/2">
-              <label htmlFor="phone" className="form-label">
-                Phone
+              <label htmlFor="facebookAddress" className="form-label">
+                Facebook Address
               </label>
               <input
-                type="tel"
-                placeholder="Phone"
+                type="facebook address"
+                placeholder="Facebook Address"
                 className="input-with-shadow"
-                name="phone"
+                name="facebookAddress"
                 required
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                defaultValue={data?.facebookAddress}
               />
             </div>
           </div>
 
           {/* input group */}
           <div className="flex flex-col md:flex-row gap-4 justify-between mb-6">
-            {/* fbLink */}
+            {/*   Mobile Number */}
             <div className=" flex flex-col gap-y-3 w-full md:w-1/2">
-              <label htmlFor="fbLink" className="form-label">
-                FB page Link
+              <label htmlFor="mobileNumber" className="form-label">
+                Mobile Number
               </label>
               <input
-                type="text"
-                placeholder="FB page Link"
-                name="fbLink"
+                type="tel"
+                placeholder="Mobile Number"
+                name="mobileNumber"
                 className="input-with-shadow"
                 required
-                value={fbLink}
-                onChange={(e) => setFbLink(e.target.value)}
+                defaultValue={data?.mobileNumber}
               />
             </div>
             {/* email */}
@@ -89,41 +108,70 @@ const EditLead = () => {
                 className="input-with-shadow"
                 name="email"
                 required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                defaultValue={data?.email}
               />
             </div>
           </div>
 
           {/* input group */}
           <div className="flex flex-col md:flex-row gap-4 justify-between mb-6">
-            {/* btype */}
-            <div className=" flex flex-col gap-y-3 w-full md:w-1/2">
-              <label htmlFor="btype" className="form-label">
-                Business Type
+          {/* Facebook Page Name */}
+          <div className="flex flex-col gap-y-3 w-full md:w-1/2">
+              <label htmlFor="facebookPageName" className="form-label">
+              Facebook Page Name
+              </label>
+              <input
+                type="text"
+                placeholder="Facebook Page Name"
+                className="input-with-shadow"
+                name="facebookPageName"
+                required
+                defaultValue={data?.facebookPageName}
+              />
+            </div>
+          {/* Business Type */}
+          <div className="flex flex-col gap-y-3 w-full md:w-1/2">
+              <label htmlFor="businessType" className="form-label">
+              Business Type
               </label>
               <input
                 type="text"
                 placeholder="Business Type"
-                name="btype"
                 className="input-with-shadow"
+                name="businessType"
                 required
-                value={bType}
-                onChange={(e) => setBType(e.target.value)}
+                defaultValue={data?.businessType}
               />
             </div>
+          </div>
+          {/* input group */}
+          <div className="flex flex-col md:flex-row gap-4 justify-between mb-6">
+         
             {/* Existing website Link */}
             <div className="flex flex-col gap-y-3 w-full md:w-1/2">
-              <label htmlFor="webLink" className="form-label">
+              <label htmlFor="existingWebsiteLink" className="form-label">
                 Existing website Link
               </label>
               <input
                 type="text"
                 placeholder="Existing website Link"
                 className="input-with-shadow"
-                name="webLink"
-                value={webLink}
-                onChange={(e) => setWebLink(e.target.value)}
+                name="existingWebsiteLink"
+                
+                defaultValue={data?.existingWebsiteLink}
+              />
+            </div>
+            {/* Website Available */}
+            <div className="flex flex-col gap-y-3 w-full md:w-1/2">
+              <label htmlFor="websiteAvailable" className="form-label">
+              Website Available
+              </label>
+              <input
+                type="checkbox"
+                className="input-with-shadow"
+                name="websiteAvailable"
+                
+                defaultValue={data?.websiteAvailable}
               />
             </div>
           </div>

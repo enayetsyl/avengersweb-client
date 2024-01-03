@@ -56,3 +56,22 @@ export const loginUser = async (email, password) => {
     throw error;
   }
 };
+
+export const addLeadData = async (data) => {
+  console.log('data lead', data)
+  const result = await axios.post(`http://localhost:5000/api/v1/addLead`, data)
+  return result.data
+}
+
+
+export const getEditLeadData = async (id) => {
+const result = await axios.get(`http://localhost:5000/api/v1/editLeadGet/${id}`)
+return result.data
+}
+
+export const editLeadData = async(leadData, id) => {
+  console.log(leadData)
+  console.log(id)
+  const result = await axios.patch(`http://localhost:5000/api/v1/editLeadPatch/${id}`, leadData)
+  return result.data
+}

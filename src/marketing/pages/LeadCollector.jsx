@@ -6,6 +6,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { deleteLead, getSingleUserLeads } from '../../lib/getfunction';
 import { AuthContext } from '../../Provider/AuthProvider';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 const LeadCollector = () => {
   const queryClient = useQueryClient()  
@@ -80,12 +81,13 @@ console.log(data)
                       <Table.Cell>{item.facebookPageName}</Table.Cell>
                       <Table.Cell>{item.facebookAddress}</Table.Cell>
                       <Table.Cell>{item.email}</Table.Cell>
-                      <Table.Cell>{item.businessType
-}</Table.Cell>
+                      <Table.Cell>{item.businessType}</Table.Cell>
                       <Table.Cell>{item.websiteAvailabe === true ? 'Yes' : 'No'}</Table.Cell>
                       <Table.Cell>{item.existingWebsiteLink}</Table.Cell>
                       <Table.Cell>
+                        <Link to={`/marketing/lead-collector/edit/${item._id}`}>
                         <FaEdit className="text-red-500 cursor-pointer" />
+                        </Link>
                       </Table.Cell>
                       <Table.Cell>
                         <FaTrash className="text-red-500 cursor-pointer" 
