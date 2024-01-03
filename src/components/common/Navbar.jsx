@@ -1,23 +1,33 @@
-import { useEffect, useState } from 'react';
+import {  useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import logo from '/images/logo.webp';
+import { AuthContext } from '../../Provider/AuthProvider';
 
 const Navbar = () => {
   const { activeNav, setActiveNav } = useAuth();
   const [isUser, setIsUser] = useState(null);
+  const [loading, setLoading] = useState(false)
   const [activeProfile, setActiveProfile] = useState(false);
-
-  useEffect(() => {
-    const userExists = JSON.parse(localStorage.getItem('userInfo'));
-
-    setIsUser(userExists);
-  }, []);
+  // console.log(isUser)
+  const {user, setUser, logOut} = useContext(AuthContext)
+  
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+  console.log(user)
+  // useEffect(() => {
+  //   setLoading(true)
+  //   const userExists = JSON.parse(localStorage.getItem('userInfo'));
+  //   setIsUser(userExists);
+  //   setLoading(false)
+  // }, []);
 
   const logoutHandler = () => {
-    localStorage.removeItem('userInfo');
-    setIsUser(null);
+    logOut()
   };
+
+ 
 
   return (
     <>
@@ -59,11 +69,13 @@ const Navbar = () => {
                   className="relative bg-gray-100 rounded-full cursor-pointer"
                   onClick={() => setActiveProfile((prev) => !prev)}
                 >
-                  <img
+                  {/* <img
                     src={isUser?.pic}
                     alt=""
                     className="w-11 h-11 rounded-full"
-                  />
+                  /> */}
+                  <h1 className='text-black p-2'>{isUser.name}</h1>
+
                   {activeProfile && (
                     <div className="absolute bg-white text-black top-full right-0 rounded-md z-[100] pt-4 shadow">
                       <Link

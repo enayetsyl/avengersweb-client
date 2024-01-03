@@ -1,26 +1,42 @@
-import { useEffect, useState } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../Provider/AuthProvider';
 
 // eslint-disable-next-line react/prop-types
-const PrivateRoute = ({ children }) => {
+const PrivateRoute = ({ children, allowedRoles }) => {
   const location = useLocation();
-  const [user, setUser] = useState();
+  const {user, loading} = useContext(AuthContext)
+  // const [loading, setLoading] = useState(false)
+  // const [user, setUser] = useState(null)
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     try {
+  //       setLoading(true);
+  //       const userExists = JSON.parse(sessionStorage.getItem('userInfo'));
+  //       if (userExists) {
+  //         setUser(userExists);
+  //       }
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-  useEffect(() => {
-    const loggedInUser = JSON.parse(localStorage.getItem('userInfo'));
-    if (loggedInUser) {
-      setUser(loggedInUser);
-    }
-  }, []);
-  console.log(user);
-  if (user && user?.role === 'pending') {
-    return <Navigate state={location.pathname} to={'/'} replace></Navigate>;
-  }
+  //   fetchUser();
+  // }, []);
 
-  if (user && user?.role !== 'pending') {
-    return children;
+  if(loading){
+    return <p>Loading.......</p>
   }
-  return <Navigate state={location.pathname} to={'/login'} replace></Navigate>;
+  const userRoles = user && user.role ? [user.role] : []
+  console.log(userRoles)
+  return (
+   userRoles?.find((role) => allowedRoles?.includes(role))
+    ? <>{children}</>
+    :
+    <Navigate to={'/'} state={{from: location}} replace/>
+    
+  )
+
 };
 
 export default PrivateRoute;
