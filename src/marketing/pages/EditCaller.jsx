@@ -1,21 +1,61 @@
 import { useState } from 'react';
 import Loader from '../../components/common/Loader';
 import { toast } from 'react-toastify';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { callerEditDataGet, callerUpdateData } from '../../lib/callerfunction';
 
 const EditCaller = () => {
-  const [loading, setLoading] = useState(false);
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [fbLink, setFbLink] = useState('');
-  const [reason, setReason] = useState('');
-  const [conversionStage, setConversionStage] = useState('');
-  const [meeting, setMeeting] = useState('');
+  const {id} = useParams()
+  const [loading, setLoading] = useState(false)
+  const navigate = useNavigate();
+  const queryClient = useQueryClient()
+
+  const {data, isLoading} = useQuery({
+    queryKey: ['callerEditData'],
+    queryFn:() => callerEditDataGet(id)
+  })
+
+  const [formData, setFormData] = useState({
+    marketingMessageSent: data?.marketingMessageSent || false,
+    messageSentAtFirstApproach: data?.messageSentAtFirstApproach || '',
+    converted: data?.converted || false,
+    reasonForNonConversion: data?.reasonForNonConversion || '',
+    firstCallDate: data?.firstCallDate || '',
+    firstMeetingDate: data?.firstMeetingDate || '',
+  })
+
+  const { mutateAsync } = useMutation({
+    mutationFn:() => callerUpdateData(id, formData),
+    onSuccess:(data) => {
+      console.log(data)
+      setLoading(false)
+      toast.success('Lead successfully added!');
+      queryClient.invalidateQueries(['callerData'])
+      navigate('/marketing/caller')
+    }
+  })
+
+ 
+
+  const handleChange = e => {
+    const { name, value, type, checked } = e.target;
+
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
+  }
+
+  if(isLoading){
+    return <Loader/>
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setLoading(true);
-    toast.success('Lead successfully added!');
+    console.log(formData)
+    await mutateAsync()
   };
   return (
     <div className="py-12">
@@ -29,111 +69,200 @@ const EditCaller = () => {
         >
           {/* input group */}
           <div className="flex flex-col md:flex-row gap-4 justify-between mb-6">
-            {/* name */}
+            {/* Business name */}
             <div className=" flex flex-col gap-y-3 w-full md:w-1/2">
-              <label htmlFor="name" className="form-label">
-                Page Name
+              <label htmlFor="businessName" className="form-label">
+              Business name
               </label>
               <input
                 type="text"
                 placeholder="Page name"
-                name="name"
+                name="businessName"
                 className="input-with-shadow"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                readOnly
+                defaultValue={data.businessName}
+                // onChange={(e) => setName(e.target.value)}
               />
             </div>
-            {/* phone */}
+            {/* Facebook Page Name */}
             <div className="flex flex-col gap-y-3 w-full md:w-1/2">
-              <label htmlFor="phone" className="form-label">
-                Phone
+              <label htmlFor="facebookPageName" className="form-label">
+              Facebook Page Name
               </label>
               <input
-                type="tel"
-                placeholder="Phone"
+                type="text"
+                placeholder="facebookPageName"
                 className="input-with-shadow"
                 name="phone"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                readOnly
+                value={data.facebookPageName}
+                // onChange={(e) => setPhone(e.target.value)}
               />
             </div>
           </div>
 
           {/* input group */}
           <div className="flex flex-col md:flex-row gap-4 justify-between mb-6">
-            {/* fbLink */}
+            {/* Facebook Page Link */}
             <div className=" flex flex-col gap-y-3 w-full md:w-1/2">
-              <label htmlFor="fbLink" className="form-label">
-                FB page Link
+              <label htmlFor="facebookAddress" className="form-label">
+                Facebook Page Link
               </label>
               <input
                 type="text"
                 placeholder="FB page Link"
-                name="fbLink"
+                name="facebookAddress"
                 className="input-with-shadow"
-                required
-                value={fbLink}
-                onChange={(e) => setFbLink(e.target.value)}
+                readOnly
+                value={data.facebookAddress}
+                // onChange={(e) => setFbLink(e.target.value)}
               />
             </div>
-            {/* reason for not conversion */}
+            {/* Email */}
             <div className="flex flex-col gap-y-3 w-full md:w-1/2">
-              <label htmlFor="reason" className="form-label">
-                Reason for not conversion
+              <label htmlFor="email" className="form-label">
+                Email
               </label>
               <input
                 type="text"
-                placeholder="Reason for not conversion"
+                placeholder="Email"
+                readOnly
                 className="input-with-shadow"
-                name="reason"
+                name="email"
                 required
-                value={reason}
-                onChange={(e) => setReason(e.target.value)}
+                value={data.email}
+                // onChange={(e) => setReason(e.target.value)}
               />
             </div>
           </div>
-
           {/* input group */}
           <div className="flex flex-col md:flex-row gap-4 justify-between mb-6">
-            {/* cstage */}
+            {/* Mobile Number */}
             <div className=" flex flex-col gap-y-3 w-full md:w-1/2">
-              <label htmlFor="cstage" className="form-label">
-                Conversion Stage
+              <label htmlFor="mobileNumber" className="form-label">
+                Mobile Number
               </label>
-              <select
-                name="cstage"
-                id="cstage"
+              <input
+                type="tel"
+                readOnly
+                name="mobileNumber"
                 className="input-with-shadow"
-                value={conversionStage}
-                onChange={(e) => setConversionStage(e.target.value)}
-              >
-                <option value="Conversion Stage" selected hidden>
-                  Conversion Stage
-                </option>
-                <option value="pending">Pending</option>
-                <option value="rejected">Rejected</option>
-                <option value="meeting">Meeting Set</option>
-                <option value="completed">Completed</option>
-              </select>
+                defaultValue={data.mobileNumber}
+              />
             </div>
-            {/* Meeting */}
+            {/* OUR CREATED WEBSITE LINK */}
             <div className="flex flex-col gap-y-3 w-full md:w-1/2">
-              <label htmlFor="meeting" className="form-label">
-                Meeting Schedule
+              <label htmlFor="ourCreatedWebsiteLink" className="form-label">
+                Our Created Website Link
               </label>
               <input
                 type="text"
-                placeholder="11/04/2024 10:00AM"
+                placeholder="ourCreatedWebsiteLink"
+                readOnly
                 className="input-with-shadow"
-                name="meeting"
-                value={meeting}
-                onChange={(e) => setMeeting(e.target.value)}
+                name="ourCreatedWebsiteLink"
+                defaultValue={data.ourCreatedWebsiteLink}
+                // onChange={(e) => setReason(e.target.value)}
+              />
+            </div>
+          </div>
+          {/* input group */}
+          <div className="flex flex-col md:flex-row gap-4 justify-between mb-6">
+            {/* Marketing Message Sent */}
+            <div className=" flex flex-col gap-y-3 w-full md:w-1/2">
+              <label htmlFor="marketingMessageSent" className="form-label">
+               Marketing Message Sent
+              </label>
+              <input
+                type="checkbox"
+                name="marketingMessageSent"
+                className="input-with-shadow "
+                defaultValue={data?.marketingMessageSent}
+                onChange={handleChange}
+              />
+            </div>
+            {/*  Message Sent At First Approach
+ */}
+            <div className="flex flex-col gap-y-3 w-full md:w-1/2">
+              <label htmlFor="messageSentAtFirstApproach" className="form-label">
+                Message Sent At First Approach
+              </label>
+              <input
+                type="text"
+                placeholder="Message Sent At First Approach"
+                className="input-with-shadow"
+                name="messageSentAtFirstApproach"
+                defaultValue={data?.messageSentAtFirstApproach}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+          {/* input group */}
+          <div className="flex flex-col md:flex-row gap-4 justify-between mb-6">
+            {/* 
+            Conversion Status */}
+            <div className=" flex flex-col gap-y-3 w-full md:w-1/2">
+              <label htmlFor="converted" className="form-label">
+                Conversion Status
+              </label>
+              <input
+                type="checkbox"
+                name="converted"
+                className="input-with-shadow"
+                defaultValue={data?.converted}
+                onChange={handleChange}
+              />
+            </div>
+            {/* Reason for Non-Conversion */}
+            <div className="flex flex-col gap-y-3 w-full md:w-1/2">
+              <label htmlFor="reasonForNonConversion
+" className="form-label">
+                Reason for Non-Conversion
+              </label>
+              <input
+                type="text"
+                placeholder="Reason for Non-Conversion"
+                className="input-with-shadow"
+                name="reasonForNonConversion"
+                defaultValue={data?.reasonForNonConversion}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+          {/* input group */}
+          <div className="flex flex-col md:flex-row gap-4 justify-between mb-6">
+          
+            {/* First Call Date */}
+            <div className="flex flex-col gap-y-3 w-full md:w-1/2">
+              <label htmlFor="firstCallDate" className="form-label">
+              First Call Date
+              </label>
+              <input
+                type="datetime-local"
+                className="input-with-shadow"
+                name="firstCallDate"
+                defaultValue={data?.firstCallDate}
+                onChange={handleChange}
+              />
+            </div>
+            {/* First Meeting Date
+ */}
+            <div className="flex flex-col gap-y-3 w-full md:w-1/2">
+              <label htmlFor="firstMeetingDate
+" className="form-label">
+              First Meeting Date
+              </label>
+              <input
+                type="datetime-local"
+                className="input-with-shadow"
+                name="firstMeetingDate"
+              defaultValue={data?.firstMeetingDate}
+                onChange={handleChange}
               />
             </div>
           </div>
 
-          <div className="mt-12">
+          <div className="mt-12 flex justify-center items-center">
             <button
               className={`bg-black text-white font-base uppercase font-bold py-3 px-12 hover:translate-y-2 duration-500 rounded cursor-pointer ${
                 loading && 'cursor-not-allowed'
@@ -146,7 +275,7 @@ const EditCaller = () => {
                   <Loader size={11} loader="sync" />
                 </>
               ) : (
-                <>Edit Lead</>
+                <>Update Status</>
               )}
             </button>
           </div>
