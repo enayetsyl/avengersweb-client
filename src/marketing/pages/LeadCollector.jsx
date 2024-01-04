@@ -34,7 +34,8 @@ const {mutateAsync} = useMutation({
     await mutateAsync(id)
   }
 
-console.log(data)
+  const tableHeadData = ['Business Name', 'Phone', 'FB Page Name','FB Page Link', 'Email','Business Type', 'Website Available','Existing Website Link', 'Edit','Delete' ]
+
   return (
     <div className="my-12 overflow-x-auto h-[700px] md:h-auto">
       <div className="container px-4 mx-auto">
@@ -50,26 +51,11 @@ console.log(data)
             ) : (
               <Table striped className="relative">
                 <Table.Head>
-                  <Table.HeadCell className="text-start">Business Name</Table.HeadCell>
-                  <Table.HeadCell className="text-start">Phone</Table.HeadCell>
-                  <Table.HeadCell className="text-start">
-                    FB Page Name
-                  </Table.HeadCell>
-                  <Table.HeadCell className="text-start">
-                    FB Page Link
-                  </Table.HeadCell>
-                  <Table.HeadCell className="text-start">Email</Table.HeadCell>
-                  <Table.HeadCell className="text-start">
-                    Business Type
-                  </Table.HeadCell>
-                  <Table.HeadCell className="text-start">
-                    Website Available
-                  </Table.HeadCell>
-                  <Table.HeadCell className="text-start">
-                    Existing Website Link
-                  </Table.HeadCell>
-                  <Table.HeadCell className="text-start">Edit</Table.HeadCell>
-                  <Table.HeadCell className="text-start">Delete</Table.HeadCell>
+                 {
+                  tableHeadData.map(head => (
+                    <Table.HeadCell className="text-start" key={head}>Business Name</Table.HeadCell>
+                  ))
+                 }
                 </Table.Head>
                 <Table.Body className="divide-y">
                   {data?.map((item) => (

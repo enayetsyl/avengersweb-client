@@ -7,6 +7,8 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { updateUserRole } from '../../lib/getfunction';
 import LeadCollectorTable from '../components/LeadCollectorTable';
+import Loader from '../../components/common/Loader';
+import CallerTabTable from './CallerTabTable';
 
 const dummyDataLead = [
   {
@@ -41,6 +43,21 @@ const MarketingAdmin = () => {
   queryFn: ()=> fetchData(tab),
  })
 
+ //  Sending data to server after changing role of user
+
+ const { mutateAsync } = useMutation({
+  mutationFn:({id, role}) => updateUserRole(id, role),
+  onSuccess:(data) => {
+    console.log(data)
+    if(data.modifiedCount > 0){
+      toast.success('Role updated Successfully')
+      queryClient.invalidateQueries(['marketingAdminDataFetch', tab])
+    }else{
+      toast.warning('An error occurred. Try again')
+    }
+  }
+ })
+
 // Populating data based on tab clicked
  const fetchData = async(selectedTab) => {
   switch(selectedTab){
@@ -56,29 +73,20 @@ const MarketingAdmin = () => {
  }
 
  console.log(data)
+ if(isLoading){
+  return <Loader/>
+ }
+ 
+ //  handler of the user role change
+ const handleRoleChange = async (id) => {
+   if(role){
+     await mutateAsync({id, role})   
+   }else{
+     toast.warning('No role selected')
+   }
+ }
 
-//  Sending data to server after changing role of user
- const { mutateAsync } = useMutation({
-  mutationFn:({id, role}) => updateUserRole(id, role),
-  onSuccess:(data) => {
-    console.log(data)
-    if(data.modifiedCount > 0){
-      toast.success('Role updated Successfully')
-      queryClient.invalidateQueries(['marketingAdminDataFetch', tab])
-    }else{
-      toast.warning('An error occurred. Try again')
-    }
-  }
- })
 
-//  handler of the user role change
-const handleRoleChange = async (id) => {
-  if(role){
-    await mutateAsync({id, role})   
-  }else{
-    toast.warning('No role selected')
-  }
-}
 
   return (
     <div className="my-12 overflow-x-auto h-[700px] md:h-auto">
@@ -117,11 +125,24 @@ const handleRoleChange = async (id) => {
             {/* tab 0 */}
             {tab === 0 && (
                <>
-               {dummyDataLead.length === 0 ? (
+               {data?.length === 0 ? (
                  <p className="text-center text-xl font-semibold">
                    No Data Found
                  </p>
                ) : (
+               <LeadCollectorTable data={data}/>
+               )}
+             </>
+            )}
+            {/* tab 1 */}
+            {tab === 1 && (
+               <>
+               {data?.length === 0 ? (
+                 <p className="text-center text-xl font-semibold">
+                   No Data Found
+                 </p>
+               ) : (
+                <CallerTabTable data={data}/>
                 //  <>
                 //    <h2 className="text-2xl font-bold my-12">
                 //      Lead Collectors:
@@ -171,67 +192,6 @@ const handleRoleChange = async (id) => {
                 //      </Table.Body>
                 //    </Table>
                 //  </>
-                <LeadCollectorTable data={data}/>
-               )}
-             </>
-            )}
-            {/* tab 1 */}
-            {tab === 1 && (
-               <>
-               {dummyDataLead.length === 0 ? (
-                 <p className="text-center text-xl font-semibold">
-                   No Data Found
-                 </p>
-               ) : (
-                 <>
-                   <h2 className="text-2xl font-bold my-12">
-                     Lead Collectors:
-                   </h2>
-                   <Table striped className="relative">
-                     <Table.Head>
-                       <Table.HeadCell className="text-start">
-                         Name
-                       </Table.HeadCell>
-                       <Table.HeadCell className="text-start">
-                         Phone
-                       </Table.HeadCell>
-                       <Table.HeadCell className="text-start">
-                         FB Page Link
-                       </Table.HeadCell>
-                       <Table.HeadCell className="text-start">
-                         Conversion Stage
-                       </Table.HeadCell>
-                       <Table.HeadCell className="text-start">
-                         Reason For Not Conversion
-                       </Table.HeadCell>
-                       <Table.HeadCell className="text-start">
-                         Meeting Schedule
-                       </Table.HeadCell>
-                       <Table.HeadCell className="text-start">
-                         Edit
-                       </Table.HeadCell>
-                     </Table.Head>
-                     <Table.Body className="divide-y">
-                       {dummyDataLead?.map((item) => (
-                         <Table.Row className="bg-gray-100" key={item?._id}>
-                           <Table.Cell>{item.name}</Table.Cell>
-                           <Table.Cell className="whitespace-wrap font-bold  min-w-[200px]">
-                             {item.phone}
-                           </Table.Cell>
-                           <Table.Cell>{item.fbLink}</Table.Cell>
-                           <Table.Cell>{item.conversionStage}</Table.Cell>
-                           <Table.Cell className="max-w-[250px] whitespace-nowrap overflow-hidden overflow-ellipsis">
-                             {item.reason}
-                           </Table.Cell>
-                           <Table.Cell>{item.meeting}</Table.Cell>
-                           <Table.Cell>
-                             <FaEdit className="text-cyan-500 cursor-pointer" />
-                           </Table.Cell>
-                         </Table.Row>
-                       ))}
-                     </Table.Body>
-                   </Table>
-                 </>
                )}
              </>
             )}
