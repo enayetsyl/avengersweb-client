@@ -43,7 +43,7 @@ const Login = () => {
   //   enabled: false,
   // })
 
-  const { loading, user, setUser, setLoading, signInUser } =
+  const { loading, user, setUser, setLoading,  } =
     useContext(AuthContext);
 
   const handleLoginSubmit = async (e) => {

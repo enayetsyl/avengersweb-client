@@ -6,23 +6,7 @@ import { AuthContext } from '../Provider/AuthProvider';
 const PrivateRoute = ({ children, allowedRoles }) => {
   const location = useLocation();
   const {user, loading} = useContext(AuthContext)
-  // const [loading, setLoading] = useState(false)
-  // const [user, setUser] = useState(null)
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     try {
-  //       setLoading(true);
-  //       const userExists = JSON.parse(sessionStorage.getItem('userInfo'));
-  //       if (userExists) {
-  //         setUser(userExists);
-  //       }
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchUser();
-  // }, []);
+ 
 
   if(loading){
     return <p>Loading.......</p>

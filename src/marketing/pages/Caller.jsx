@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 
 
 
-const tebleHeadName = [
+const tableHeadName = [
   "Business Name",
   "Facebook Page Name",
   "Business Type",
@@ -51,7 +51,7 @@ const Caller = () => {
             ) : (
               <Table striped className="relative">
                 <Table.Head>
-                  {tebleHeadName.map((head) => (
+                  {tableHeadName.map((head) => (
                     <Table.HeadCell className="text-start" key={head}>
                       {head}
                     </Table.HeadCell>

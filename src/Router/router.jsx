@@ -14,6 +14,8 @@ import AddLead from '../marketing/pages/AddLead';
 import EditLead from '../marketing/pages/EditLead';
 import AddCaller from '../marketing/pages/AddCaller';
 import EditCaller from '../marketing/pages/EditCaller';
+import DevelopmentLayout from '../MainLayout/DevLayout';
+import DevelopmentAdmin from '../development/DevelopmentAdmin';
 
 const router = createBrowserRouter([
   {
@@ -91,6 +93,69 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
+    ],
+  },
+  // development routes
+  {
+    path: '/development',
+    element: <DevelopmentLayout />,
+    children: [
+      {
+        path: '/development',
+        element: (
+          <PrivateRoute allowedRoles={['developmentAdmin']}>
+          <DevelopmentAdmin />
+          </PrivateRoute>
+        ),
+      },
+      // {
+      //   path: '/marketing/lead-collector',
+      //   element: (
+      //      <PrivateRoute allowedRoles={['LeadCollector']}>
+      //       <LeadCollector />
+      //      </PrivateRoute>
+      //   ),
+      // },
+      // {
+      //   path: '/marketing/lead-collector/add',
+      //   element: (
+      //     <PrivateRoute allowedRoles={['LeadCollector']}>
+      //     <AddLead />
+      //     </PrivateRoute>
+      //   ),
+      // },
+      // {
+      //   path: '/marketing/lead-collector/edit/:id',
+      //   element: (
+      //     <PrivateRoute allowedRoles={['LeadCollector']}>
+      //     <EditLead />
+      //     </PrivateRoute>
+      //   ),
+      // },
+      // {
+      //   path: '/marketing/caller',
+      //   element: (
+      //     <PrivateRoute allowedRoles={['Caller']}>
+      //       <Caller />
+      //     </PrivateRoute>
+      //   ),
+      // },
+      // {
+      //   path: '/marketing/caller/add',
+      //   element: (
+      //     <PrivateRoute allowedRoles={['Caller']}>
+      //     <AddCaller />
+      //     </PrivateRoute>
+      //   ),
+      // },
+      // {
+      //   path: '/marketing/caller/edit/:id',
+      //   element: (
+      //     <PrivateRoute allowedRoles={['Caller']}>
+      //     <EditCaller />
+      //     </PrivateRoute>
+      //   ),
+      // },
     ],
   },
 ]);

@@ -10,27 +10,6 @@ import LeadCollectorTable from '../components/LeadCollectorTable';
 import Loader from '../../components/common/Loader';
 import CallerTabTable from './CallerTabTable';
 
-const dummyDataLead = [
-  {
-    name: 'Shafayet',
-    phone: '01638719578',
-    fbLink: 'https://facebook.com/avengers-web',
-    conversionStage: 'pending',
-    reason: 'lorem ipsum dolor sit amet.',
-    meeting: '10/11/23',
-    time: '10:21AM',
-  },
-  {
-    name: 'Shafayet',
-    phone: '01638719578',
-    fbLink: 'https://facebook.com/avengers-web',
-    conversionStage: 'pending',
-    reason:
-      'lorem ipsum dolor sit amet. lorem ipsum dolor sit amet.lorem ipsum dolor sit amet.lorem ipsum dolor sit amet.',
-    meeting: '10/11/23',
-    time: '10:21AM',
-  },
-];
 
 const MarketingAdmin = () => {
   const [tab, setTab] = useState(0)
