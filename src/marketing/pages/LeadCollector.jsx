@@ -1,12 +1,14 @@
 import { Table } from 'flowbite-react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import TableLoader from '../../components/common/TableLoader';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { deleteLead, getSingleUserLeads } from '../../lib/getfunction';
 import { AuthContext } from '../../Provider/AuthProvider';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import { leadPost } from '../../lib/leadFunction';
 
 const LeadCollector = () => {
   const queryClient = useQueryClient()  
@@ -17,10 +19,10 @@ const LeadCollector = () => {
     queryFn:() => getSingleUserLeads(userEmail)
   })
 
-const {mutateAsync} = useMutation({
+const {mutateAsync: deleteMutation} = useMutation({
   mutationFn: (id) => deleteLead(id),
   onSuccess:(data) => {
-    console.log('from mutation function', data)
+    console.log('from delete mutation function', data)
     if(data.deletedCount > 0){
       toast.success('Lead deleted successfully.')
       queryClient.invalidateQueries(['individualLeadCollectorData'])
@@ -29,12 +31,55 @@ const {mutateAsync} = useMutation({
     }
   }
 })
+const {mutateAsync: postMutation} = useMutation({
+  mutationFn: (id) => leadPost(id),
+  onSuccess:(data) => {
+    console.log('from post mutation function', data)
+    if(data._id){
+      toast.success('Lead Posted successfully.')
+      queryClient.invalidateQueries(['individualLeadCollectorData'])
+    }else{
+      toast.warning('An error occurred. Try again')
+    }
+  }
+})
 
   const handleDelete = async (id) => {
-    await mutateAsync(id)
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await deleteMutation(id)
+      }
+    });
+
   }
 
-  const tableHeadData = ['Business Name', 'Phone', 'FB Page Name','FB Page Link', 'Email','Business Type', 'Website Available','Existing Website Link', 'Edit','Delete' ]
+  const handlePost = async (id) => {
+    console.log(id)
+    Swal.fire({
+      title: "Are you sure?",
+      text: "After post you cannot see it.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#ff4589",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Post it!"
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+       await postMutation(id)
+      }
+    });
+
+  }
+
+  const tableHeadData = ['Business Name', 'Phone', 'FB Page Name','FB Page Link', 'Email','Business Type', 'Website Available','Existing Website Link', 'Edit','Delete','Post for Production' ]
 
   return (
     <div className="my-12 overflow-x-auto h-[700px] md:h-auto">
@@ -53,7 +98,7 @@ const {mutateAsync} = useMutation({
                 <Table.Head>
                  {
                   tableHeadData.map(head => (
-                    <Table.HeadCell className="text-start" key={head}>Business Name</Table.HeadCell>
+                    <Table.HeadCell className="text-start" key={head}>{head}</Table.HeadCell>
                   ))
                  }
                 </Table.Head>
@@ -79,6 +124,11 @@ const {mutateAsync} = useMutation({
                         <FaTrash className="text-red-500 cursor-pointer" 
                         onClick={()=> handleDelete(item._id)}
                         />
+                      </Table.Cell>
+                      <Table.Cell>
+                        <button className='py-1.5 px-5 rounded-md 
+                        bg-black text-white hover:bg-primary  duration-300 cursor-pointer'
+              onClick={() => handlePost(item._id)}>Post</button>
                       </Table.Cell>
                     </Table.Row>
                   ))}

@@ -2,7 +2,6 @@ import axios from "axios"
 
 export const callerData = async () => {
   const result = await axios.get(`http://localhost:5000/api/v1/callerInfo`)
-  console.log(result.data)
   return result.data
 }
 

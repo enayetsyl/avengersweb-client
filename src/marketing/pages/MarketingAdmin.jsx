@@ -27,7 +27,6 @@ const MarketingAdmin = () => {
  const { mutateAsync } = useMutation({
   mutationFn:({id, role}) => updateUserRole(id, role),
   onSuccess:(data) => {
-    console.log(data)
     if(data.modifiedCount > 0){
       toast.success('Role updated Successfully')
       queryClient.invalidateQueries(['marketingAdminDataFetch', tab])
@@ -51,7 +50,6 @@ const MarketingAdmin = () => {
   }
  }
 
- console.log(data)
  if(isLoading){
   return <Loader/>
  }
@@ -237,127 +235,7 @@ const MarketingAdmin = () => {
              </>
             )}
 
-        {/* {loading ? (
-          <TableLoader />
-        ) : (
-          <>
-            {tab === 0 ? (
-              <>
-                {dummyDataLead.length === 0 ? (
-                  <p className="text-center text-xl font-semibold">
-                    No Data Found
-                  </p>
-                ) : (
-                  <>
-                    <h2 className="text-2xl font-bold my-12">
-                      Lead Collectors:
-                    </h2>
-                    <Table striped className="relative">
-                      <Table.Head>
-                        <Table.HeadCell className="text-start">
-                          Name
-                        </Table.HeadCell>
-                        <Table.HeadCell className="text-start">
-                          Phone
-                        </Table.HeadCell>
-                        <Table.HeadCell className="text-start">
-                          FB Page Link
-                        </Table.HeadCell>
-                        <Table.HeadCell className="text-start">
-                          Conversion Stage
-                        </Table.HeadCell>
-                        <Table.HeadCell className="text-start">
-                          Reason For Not Conversion
-                        </Table.HeadCell>
-                        <Table.HeadCell className="text-start">
-                          Meeting Schedule
-                        </Table.HeadCell>
-                        <Table.HeadCell className="text-start">
-                          Edit
-                        </Table.HeadCell>
-                      </Table.Head>
-                      <Table.Body className="divide-y">
-                        {dummyDataLead?.map((item) => (
-                          <Table.Row className="bg-gray-100" key={item?._id}>
-                            <Table.Cell>{item.name}</Table.Cell>
-                            <Table.Cell className="whitespace-wrap font-bold  min-w-[200px]">
-                              {item.phone}
-                            </Table.Cell>
-                            <Table.Cell>{item.fbLink}</Table.Cell>
-                            <Table.Cell>{item.conversionStage}</Table.Cell>
-                            <Table.Cell className="max-w-[250px] whitespace-nowrap overflow-hidden overflow-ellipsis">
-                              {item.reason}
-                            </Table.Cell>
-                            <Table.Cell>{item.meeting}</Table.Cell>
-                            <Table.Cell>
-                              <FaEdit className="text-cyan-500 cursor-pointer" />
-                            </Table.Cell>
-                          </Table.Row>
-                        ))}
-                      </Table.Body>
-                    </Table>
-                  </>
-                )}
-              </>
-            ) : (
-              <>
-                {dummyDataLead.length === 0 ? (
-                  <p className="text-center text-xl font-semibold">
-                    No Data Found
-                  </p>
-                ) : (
-                  <>
-                    <h2 className="text-2xl font-bold my-12">Callers:</h2>
-                    <Table striped className="relative">
-                      <Table.Head>
-                        <Table.HeadCell className="text-start">
-                          Name
-                        </Table.HeadCell>
-                        <Table.HeadCell className="text-start">
-                          Phone
-                        </Table.HeadCell>
-                        <Table.HeadCell className="text-start">
-                          FB Page Link
-                        </Table.HeadCell>
-                        <Table.HeadCell className="text-start">
-                          Conversion Stage
-                        </Table.HeadCell>
-                        <Table.HeadCell className="text-start">
-                          Reason For Not Conversion
-                        </Table.HeadCell>
-                        <Table.HeadCell className="text-start">
-                          Meeting Schedule
-                        </Table.HeadCell>
-                        <Table.HeadCell className="text-start">
-                          Edit
-                        </Table.HeadCell>
-                      </Table.Head>
-                      <Table.Body className="divide-y">
-                        {dummyDataLead?.map((item) => (
-                          <Table.Row className="bg-gray-100" key={item?._id}>
-                            <Table.Cell>{item.name}</Table.Cell>
-                            <Table.Cell className="whitespace-wrap font-bold  min-w-[200px]">
-                              {item.phone}
-                            </Table.Cell>
-                            <Table.Cell>{item.fbLink}</Table.Cell>
-                            <Table.Cell>{item.conversionStage}</Table.Cell>
-                            <Table.Cell className="max-w-[250px] whitespace-nowrap overflow-hidden overflow-ellipsis">
-                              {item.reason}
-                            </Table.Cell>
-                            <Table.Cell>{item.meeting}</Table.Cell>
-                            <Table.Cell>
-                              <FaEdit className="text-cyan-500 cursor-pointer" />
-                            </Table.Cell>
-                          </Table.Row>
-                        ))}
-                      </Table.Body>
-                    </Table>
-                  </>
-                )}
-              </>
-            )}
-          </>
-        )} */}
+       
       </div>
     </div>
   );
