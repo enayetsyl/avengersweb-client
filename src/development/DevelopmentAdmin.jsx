@@ -12,7 +12,9 @@ const DevelopmentAdmin = () => {
   const [role, setRole] = useState({});
   const [isButtonDisabled, setButtonDisabled] = useState(true)
   const queryClient = useQueryClient();
+
   const userTableHead = ["Name", "Email", "Role", "Select Role", "Change Role"];
+  
   // Fetching data
   const { data, isLoading } = useQuery({
     queryKey: ["developmentAdminDataFetch", tab],

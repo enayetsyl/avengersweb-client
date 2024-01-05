@@ -1,27 +1,21 @@
-import { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {  useState } from 'react';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
 import Loader from '../components/common/Loader';
 import { addData } from '../lib/getfunction';
-import { AuthContext } from '../Provider/AuthProvider';
+import useAuth from '../hooks/useAuth';
 
 const Register = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [conPassword, setConPassword] = useState('');
-  const [pic, setPic] = useState();
   const [showPassword, setShowPassword] = useState(false);
   const [showConPassword, setShowConPassword] = useState(false);
-  const navigate = useNavigate();
-  const {loading, setLoading, createUser} = useContext(AuthContext)
+  const {loading, setLoading} = useAuth()
 
-  // const postDetails = (pic) => {
-  //   setLoading(true);
 
   //   return new Promise((resolve, reject) => {
   //     if (
@@ -76,11 +70,12 @@ const Register = () => {
   // };
 
   // eslint-disable-next-line no-unused-vars
-  const { data, mutateAsync } = useMutation({
+  
+  const {  mutateAsync } = useMutation({
     mutationFn: ({name, email, password}) => addData(name, email, password),
     onSuccess: (data) => {
       console.log('from on success', data)
-      // localStorage.setItem('userInfo', JSON.stringify(data));
+    
       if(data.message === 'Registration Successful'){
         toast.success('Registration Successful. Wait for approval');
         setLoading(false);
@@ -90,8 +85,6 @@ const Register = () => {
       }else{
         toast.warning('An error occurred. Please try again later. ')
       }
-      // navigate('/');
-      // window.location.reload();
     },
   });
 

@@ -8,11 +8,13 @@ import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { deleteLead, getSingleUserLeads, leadPost } from '../../lib/leadFunction';
+import useAuth from '../../hooks/useAuth';
 
 const LeadCollector = () => {
   const queryClient = useQueryClient()  
-  const {user} = useContext(AuthContext)
+  const {user} = useAuth()
   const userEmail = user?.email;
+
   const {data, isLoading} = useQuery({
     queryKey:['individualLeadCollectorData'],
     queryFn:() => getSingleUserLeads(userEmail)
@@ -30,6 +32,7 @@ const {mutateAsync: deleteMutation} = useMutation({
     }
   }
 })
+
 const {mutateAsync: postMutation} = useMutation({
   mutationFn: (id) => leadPost(id),
   onSuccess:(data) => {

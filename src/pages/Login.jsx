@@ -5,46 +5,17 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { loginUser } from "../lib/getfunction";
 import { AuthContext } from "../Provider/AuthProvider";
+import useAuth from "../hooks/useAuth";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  // const addData = async () => {
-  //   try {
-  //     const result = await axios.post(`http://localhost:5000/user/login`, {
-  //       email,
-  //       password,
-  //     });
-  //     console.log(result);
-  //     return result;
-  //   } catch (error) {
-  //     console.log(error);
-  //     throw error;
-  //   }
-  // };
-
-  // eslint-disable-next-line no-unused-vars
-  // const { data, mutateAsync } = useMutation({
-  //   mutationFn: addData,
-  //   onSuccess: (data) => {
-  //     localStorage.setItem('userInfo', JSON.stringify(data.data));
-  //     toast.success('Login Successful!');
-  //     setLoading(false);
-  //     navigate('/');
-  //     window.location.reload();
-  //   },
-  // });
-
-  // const {data, error} = useQuery({
-  //   queryKey:['loginUser'],
-  //   queryFn:() => loginUser(email, password),
-  //   enabled: false,
-  // })
+  
 const [loading, setLoading] = useState(false)
   const {  setUser } =
-    useContext(AuthContext);
+    useAuth()
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();

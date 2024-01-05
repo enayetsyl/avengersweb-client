@@ -2,7 +2,7 @@ import { Table } from "flowbite-react";
 import { FaEdit } from "react-icons/fa";
 
 const CallerTabTable = (data) => {
-  console.log(data.data);
+
   const tableHeadName = [
     "Business Name",
     "Facebook Page Name",
@@ -26,6 +26,7 @@ const CallerTabTable = (data) => {
     const formattedDate = new Date(dateString).toLocaleDateString('en-US', options)
     return formattedDate
   }
+  
   return (
     <div>
       <>

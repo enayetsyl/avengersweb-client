@@ -17,6 +17,7 @@ import EditCaller from '../marketing/pages/EditCaller';
 import DevelopmentLayout from '../MainLayout/DevLayout';
 import DevelopmentAdmin from '../development/DevelopmentAdmin';
 import SingleDeveloper from '../development/SingleDeveloper';
+import DeveloperEdit from '../development/DeveloperEdit';
 
 const router = createBrowserRouter([
   {
@@ -117,19 +118,19 @@ const router = createBrowserRouter([
            </PrivateRoute>
         ),
       },
+      {
+        path: '/development/developer/edit/:id',
+        element: (
+          <PrivateRoute allowedRoles={['Developer']}>
+          <DeveloperEdit />
+          </PrivateRoute>
+        ),
+      },
       // {
       //   path: '/marketing/lead-collector/add',
       //   element: (
       //     <PrivateRoute allowedRoles={['LeadCollector']}>
       //     <AddLead />
-      //     </PrivateRoute>
-      //   ),
-      // },
-      // {
-      //   path: '/marketing/lead-collector/edit/:id',
-      //   element: (
-      //     <PrivateRoute allowedRoles={['LeadCollector']}>
-      //     <EditLead />
       //     </PrivateRoute>
       //   ),
       // },

@@ -2,10 +2,11 @@ import { useContext, useEffect, useState } from 'react';
 import logo from '/images/logo.webp';
 import { AuthContext } from '../../Provider/AuthProvider';
 import { useNavigate } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
 
 const MarketingNav = () => {
   const [activeProfile, setActiveProfile] = useState(false);
-  const {user, logOut} = useContext(AuthContext)
+  const {user, logOut} = useAuth()
   const navigate = useNavigate()
 
   const logoutHandler = () => {

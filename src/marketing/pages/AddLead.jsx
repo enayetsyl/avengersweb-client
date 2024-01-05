@@ -5,12 +5,14 @@ import { AuthContext } from '../../Provider/AuthProvider';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router';
 import { addLeadData } from '../../lib/leadFunction';
+import useAuth from '../../hooks/useAuth';
 
 const AddLead = () => {
   const [loading, setLoading] = useState(false);
-  const {user} = useContext(AuthContext)
+  const {user} = useAuth()
   const navigate = useNavigate()
   const entryBy = user?.email;
+
   const [userData, setUserData] = useState({
     businessName: '',
     facebookAddress:'',
@@ -51,6 +53,7 @@ const AddLead = () => {
       ...prevInfo, [name] : inputValue
     }))
   }
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);

@@ -10,6 +10,7 @@ const LeadCollectorTable = ({data}) => {
   const [callerId, setCallerId] = useState(null)
   const [leadId, setLeadId] = useState(null)
   const queryClient = useQueryClient()
+  
   const {data:callerName, isLoading} = useQuery({
     queryKey:['callerInfo'],
     queryFn: callerData,

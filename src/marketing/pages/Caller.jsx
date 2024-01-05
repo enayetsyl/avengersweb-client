@@ -1,11 +1,10 @@
 import { Table } from "flowbite-react";
 import { FaEdit } from "react-icons/fa";
-import { useContext, useState } from "react";
 import TableLoader from "../../components/common/TableLoader";
-import { AuthContext } from "../../Provider/AuthProvider";
 import { useQuery } from "@tanstack/react-query";
 import { getCallerData } from "../../lib/callerfunction";
 import { Link } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
 
 
@@ -25,16 +24,15 @@ const tableHeadName = [
 ];
 
 const Caller = () => {
-  // const [loading, setIsLoading] = useState(false);
-  const { user } = useContext(AuthContext);
-  const email = user.email;
+    const { user } = useAuth()
+
+    const email = user.email;
 
   const { data, isLoading: loading } = useQuery({
     queryKey: ["callerData"],
     queryFn: () => getCallerData(email),
   });
 
-  console.log(data);
 
   return (
     <div className="my-12 overflow-x-auto h-[700px] md:h-auto">
