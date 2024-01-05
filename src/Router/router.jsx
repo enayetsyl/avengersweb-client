@@ -16,6 +16,7 @@ import AddCaller from '../marketing/pages/AddCaller';
 import EditCaller from '../marketing/pages/EditCaller';
 import DevelopmentLayout from '../MainLayout/DevLayout';
 import DevelopmentAdmin from '../development/DevelopmentAdmin';
+import SingleDeveloper from '../development/SingleDeveloper';
 
 const router = createBrowserRouter([
   {
@@ -108,14 +109,14 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-      // {
-      //   path: '/marketing/lead-collector',
-      //   element: (
-      //      <PrivateRoute allowedRoles={['LeadCollector']}>
-      //       <LeadCollector />
-      //      </PrivateRoute>
-      //   ),
-      // },
+      {
+        path: '/development/developer',
+        element: (
+           <PrivateRoute allowedRoles={['Developer']}>
+            <SingleDeveloper />
+           </PrivateRoute>
+        ),
+      },
       // {
       //   path: '/marketing/lead-collector/add',
       //   element: (

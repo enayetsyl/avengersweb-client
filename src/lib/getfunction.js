@@ -1,17 +1,5 @@
 import axios from "axios"
 
-export const getSingleUserLeads = async(email) => {
-  {
-    const response = await axios.get(`http://localhost:5000/api/v1/singleUserLeads?email=${email}`)
-    return response.data
-  }
-}
-
-export const deleteLead = async (id) => {
-  const result = await axios.delete(`http://localhost:5000/api/v1/deleteLead/${id}`)
-  return result.data
-}
-
 export const addData = async (name,
   email,
   password) => {
@@ -35,7 +23,6 @@ export const updateUserRole = async(id, role) => {
   return result.data
 }
 
-
 export const loginUser = async (email, password) => {
   try {
     const result = await axios.get(`http://localhost:5000/api/v1/userLogin`, {
@@ -52,18 +39,7 @@ export const loginUser = async (email, password) => {
   }
 };
 
-export const addLeadData = async (data) => {
-  const result = await axios.post(`http://localhost:5000/api/v1/addLead`, data)
-  return result.data
-}
 
 
-export const getEditLeadData = async (id) => {
-const result = await axios.get(`http://localhost:5000/api/v1/editLeadGet/${id}`)
-return result.data
-}
 
-export const editLeadData = async(leadData, id) => {
-  const result = await axios.patch(`http://localhost:5000/api/v1/editLeadPatch/${id}`, leadData)
-  return result.data
-}
+

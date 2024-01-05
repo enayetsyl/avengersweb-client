@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import {  useState } from 'react';
 import Loader from '../../components/common/Loader';
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { editLeadData, getEditLeadData } from '../../lib/getfunction';
+import { editLeadData, getEditLeadData } from '../../lib/leadFunction';
+
 
 const EditLead = () => {
   const {id} = useParams()

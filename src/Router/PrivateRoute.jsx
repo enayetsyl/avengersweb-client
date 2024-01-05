@@ -12,7 +12,6 @@ const PrivateRoute = ({ children, allowedRoles }) => {
     return <p>Loading.......</p>
   }
   const userRoles = user && user.role ? [user.role] : []
-  console.log(userRoles)
   return (
    userRoles?.find((role) => allowedRoles?.includes(role))
     ? <>{children}</>

@@ -6,7 +6,6 @@ const AuthProvider = ({ children }) => {
   const [activeNav, setActiveNav] = useState('home');
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
-  console.log(user)
 
   const logOut = () => {
     sessionStorage.removeItem('userInfo');

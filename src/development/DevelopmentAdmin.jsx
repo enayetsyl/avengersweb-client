@@ -5,7 +5,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import Loader from "../components/common/Loader";
 import { updateUserRole } from "../lib/getfunction";
-import DeveloperTable from "./components/DeveloperTable";
+import AdminDeveloperTable from "./components/AdminDeveloperTable";
 
 const DevelopmentAdmin = () => {
   const [tab, setTab] = useState(0);
@@ -20,7 +20,6 @@ const DevelopmentAdmin = () => {
   });
 
   //  Sending data to server after changing role of user
-
   const { mutateAsync } = useMutation({
     mutationFn: ({ id, role }) => updateUserRole(id, role),
     onSuccess: (data) => {
@@ -40,7 +39,7 @@ const DevelopmentAdmin = () => {
     switch (selectedTab) {
       case 0:
         return axios
-          .get("http://localhost:5000/api/v1/allLeads")
+          .get("http://localhost:5000/api/v1/allDevLead")
           .then((response) => response.data);
       case 1:
         return axios
@@ -103,7 +102,7 @@ const DevelopmentAdmin = () => {
             {data?.length === 0 ? (
               <p className="text-center text-xl font-semibold">No Data Found</p>
             ) : (
-              <DeveloperTable data={data} />
+              <AdminDeveloperTable data={data} />
             )}
           </>
         )}

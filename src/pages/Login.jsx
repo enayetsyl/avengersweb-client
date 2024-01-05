@@ -42,8 +42,8 @@ const Login = () => {
   //   queryFn:() => loginUser(email, password),
   //   enabled: false,
   // })
-
-  const { loading, user, setUser, setLoading,  } =
+const [loading, setLoading] = useState(false)
+  const {  setUser } =
     useContext(AuthContext);
 
   const handleLoginSubmit = async (e) => {
@@ -53,8 +53,7 @@ const Login = () => {
     if (email && password) {
       try {
         const result = await loginUser(email, password);
-        console.log(result.data);
-
+        setUser(result.data.userInfo)
         if (result.data.message === "Login Successful") {
           const serverData = result.data.userInfo;
           sessionStorage.setItem("userInfo", JSON.stringify(serverData));
@@ -65,7 +64,13 @@ const Login = () => {
             navigate("/marketing/lead-collector");
           } else if (result.data.userInfo.role === "Caller") {
             navigate("/marketing/caller");
-          } else {
+          } else if (result.data.userInfo.role === "marketingAdmin") {
+            navigate("/marketing");
+          } else if (result.data.userInfo.role === "developmentAdmin") {
+            navigate("/development");
+          }  else if (result.data.userInfo.role === "Developer") {
+            navigate("/development/developer");
+          }else {
             navigate("/");
           }
         } else if (result.data === "Incorrect Password") {

@@ -3,12 +3,11 @@ import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useContext } from 'react';
 import TableLoader from '../../components/common/TableLoader';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { deleteLead, getSingleUserLeads } from '../../lib/getfunction';
 import { AuthContext } from '../../Provider/AuthProvider';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { leadPost } from '../../lib/leadFunction';
+import { deleteLead, getSingleUserLeads, leadPost } from '../../lib/leadFunction';
 
 const LeadCollector = () => {
   const queryClient = useQueryClient()  

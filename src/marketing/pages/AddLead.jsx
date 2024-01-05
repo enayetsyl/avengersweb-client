@@ -3,8 +3,8 @@ import Loader from '../../components/common/Loader';
 import { toast } from 'react-toastify';
 import { AuthContext } from '../../Provider/AuthProvider';
 import { useMutation } from '@tanstack/react-query';
-import { addLeadData } from '../../lib/getfunction';
 import { useNavigate } from 'react-router';
+import { addLeadData } from '../../lib/leadFunction';
 
 const AddLead = () => {
   const [loading, setLoading] = useState(false);
