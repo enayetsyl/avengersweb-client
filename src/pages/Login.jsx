@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { loginUser } from "../lib/getfunction";
 import { AuthContext } from "../Provider/AuthProvider";
 import useAuth from "../hooks/useAuth";
+import axios from "axios";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -14,8 +15,7 @@ const Login = () => {
   const navigate = useNavigate();
   
 const [loading, setLoading] = useState(false)
-  const {  setUser } =
-    useAuth()
+  const {  setUser } =  useAuth()
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
@@ -29,19 +29,37 @@ const [loading, setLoading] = useState(false)
           const serverData = result.data.userInfo;
           sessionStorage.setItem("userInfo", JSON.stringify(serverData));
 
-          toast.success("Login Successful!");
           setLoading(false);
+          const email = result.data.userInfo.email;
+          console.log(email)
+          try {
+            const res = await axios.post('http://localhost:5000/api/v1/jwt', email)
+            console.log(res.data.token)
+            if(res.data.token){
+              const token = res?.data?.token
+              sessionStorage.setItem("token", token)
+            }
+          } catch (error) {
+            console.log('Error in jwt route', error)
+          }
+
           if (result.data.userInfo.role === "LeadCollector") {
+            toast.success("Login Successful!");
             navigate("/marketing/lead-collector");
           } else if (result.data.userInfo.role === "Caller") {
+            toast.success("Login Successful!");
             navigate("/marketing/caller");
           } else if (result.data.userInfo.role === "marketingAdmin") {
+            toast.success("Login Successful!");
             navigate("/marketing");
           } else if (result.data.userInfo.role === "developmentAdmin") {
+            toast.success("Login Successful!");
             navigate("/development");
           }  else if (result.data.userInfo.role === "Developer") {
+            toast.success("Login Successful!");
             navigate("/development/developer");
           }else {
+            toast.warning("Your Account is not approved yet");
             navigate("/");
           }
         } else if (result.data === "Incorrect Password") {

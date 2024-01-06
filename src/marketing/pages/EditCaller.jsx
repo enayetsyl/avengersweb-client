@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {  useState } from 'react';
 import Loader from '../../components/common/Loader';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -16,22 +16,39 @@ const EditCaller = () => {
     queryFn:() => callerEditDataGet(id)
   })
 
+
+  
+   // Extract the date value from the server response
+   const defaultFirstCallDate = data?.firstCallDate;
+
+   const defaultFirstMeetingDate = data?.firstMeetingDate
+
+   // Format the date for the input field (if it exists)
+   const formattedDefaultFirstCallDate =
+     defaultFirstCallDate && new Date(defaultFirstCallDate).toISOString().slice(0, -8);
+
+   const formattedDefaultFirstMeetingDate =
+   defaultFirstMeetingDate && new Date(defaultFirstMeetingDate).toISOString().slice(0, -8);
+
+console.log(formattedDefaultFirstCallDate)
+console.log(formattedDefaultFirstMeetingDate)
+ 
   const [formData, setFormData] = useState({
-    marketingMessageSent: data?.marketingMessageSent || false,
+     marketingMessageSent: data?.marketingMessageSent || false,
     messageSentAtFirstApproach: data?.messageSentAtFirstApproach || '',
     converted: data?.converted || false,
     reasonForNonConversion: data?.reasonForNonConversion || '',
-    firstCallDate: data?.firstCallDate || '',
-    firstMeetingDate: data?.firstMeetingDate || '',
+    firstCallDate: formattedDefaultFirstCallDate || '',
+    firstMeetingDate: formattedDefaultFirstMeetingDate || '',
   })
-
+console.log(formData)
   const { mutateAsync } = useMutation({
     mutationFn:() => callerUpdateData(id, formData),
     onSuccess:(data) => {
       console.log(data)
       setLoading(false)
-      toast.success('Lead successfully added!');
-      queryClient.invalidateQueries(['callerData'])
+      toast.success('Lead successfully edited!');
+      queryClient.invalidateQueries(['callerData', 'callerEditData'])
       navigate('/marketing/caller')
     }
   })
@@ -80,7 +97,7 @@ const EditCaller = () => {
                 name="businessName"
                 className="input-with-shadow"
                 readOnly
-                defaultValue={data.businessName}
+                value={data.businessName}
                 // onChange={(e) => setName(e.target.value)}
               />
             </div>
@@ -147,7 +164,7 @@ const EditCaller = () => {
                 readOnly
                 name="mobileNumber"
                 className="input-with-shadow"
-                defaultValue={data.mobileNumber}
+                value={data.mobileNumber}
               />
             </div>
             {/* OUR CREATED WEBSITE LINK */}
@@ -161,7 +178,7 @@ const EditCaller = () => {
                 readOnly
                 className="input-with-shadow"
                 name="ourCreatedWebsiteLink"
-                defaultValue={data.ourCreatedWebsiteLink}
+                value={data.ourCreatedWebsiteLink}
                 // onChange={(e) => setReason(e.target.value)}
               />
             </div>
@@ -177,7 +194,7 @@ const EditCaller = () => {
                 type="checkbox"
                 name="marketingMessageSent"
                 className="input-with-shadow "
-                defaultValue={data?.marketingMessageSent}
+                checked={formData?.marketingMessageSent}
                 onChange={handleChange}
               />
             </div>
@@ -192,7 +209,7 @@ const EditCaller = () => {
                 placeholder="Message Sent At First Approach"
                 className="input-with-shadow"
                 name="messageSentAtFirstApproach"
-                defaultValue={data?.messageSentAtFirstApproach}
+                value={formData?.messageSentAtFirstApproach}
                 onChange={handleChange}
               />
             </div>
@@ -209,7 +226,7 @@ const EditCaller = () => {
                 type="checkbox"
                 name="converted"
                 className="input-with-shadow"
-                defaultValue={data?.converted}
+                checked={formData?.converted}
                 onChange={handleChange}
               />
             </div>
@@ -224,7 +241,7 @@ const EditCaller = () => {
                 placeholder="Reason for Non-Conversion"
                 className="input-with-shadow"
                 name="reasonForNonConversion"
-                defaultValue={data?.reasonForNonConversion}
+                value={formData?.reasonForNonConversion}
                 onChange={handleChange}
               />
             </div>
@@ -241,7 +258,8 @@ const EditCaller = () => {
                 type="datetime-local"
                 className="input-with-shadow"
                 name="firstCallDate"
-                defaultValue={data?.firstCallDate}
+                value={formData?.firstCallDate || ''
+                }
                 onChange={handleChange}
               />
             </div>
@@ -256,7 +274,7 @@ const EditCaller = () => {
                 type="datetime-local"
                 className="input-with-shadow"
                 name="firstMeetingDate"
-              defaultValue={data?.firstMeetingDate}
+              value={formData?.firstMeetingDate}
                 onChange={handleChange}
               />
             </div>

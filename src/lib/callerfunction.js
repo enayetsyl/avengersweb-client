@@ -1,9 +1,17 @@
 import axios from "axios"
 
 export const getCallerData = async (email) => {
-  const result = await axios.get(`http://localhost:5000/api/v1/callerLead?email=${email}`)
+  const result = await axios.get(`http://localhost:5000/api/v1/callerLead?email=${email}`,{
+    headers: {
+      authorization: `Bearer ${sessionStorage.getItem('token')}`
+    }
+  })
   return result.data
 }
+// export const getCallerData = async (email) => {
+//   const result = await axios.get(`http://localhost:5000/api/v1/callerLead?email=${email}`)
+//   return result.data
+// }
 
 export const callerEditDataGet = async (id) => {
   const result = await axios.get(`http://localhost:5000/api/v1/singleCallerData/${id}`)
@@ -16,3 +24,4 @@ export const callerUpdateData = async(id, data) => {
   console.log(result.data)
   return result.data
 }
+

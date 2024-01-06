@@ -1,14 +1,13 @@
 import { Table } from 'flowbite-react';
 import { FaEdit } from 'react-icons/fa';
-import { useEffect, useState } from 'react';
-import TableLoader from '../../components/common/TableLoader';
+import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { updateUserRole } from '../../lib/getfunction';
-import LeadCollectorTable from '../components/LeadCollectorTable';
 import Loader from '../../components/common/Loader';
 import CallerTabTable from './CallerTabTable';
+import CallerAssignTable from '../components/CallerAssignTable';
 
 
 const MarketingAdmin = () => {
@@ -40,9 +39,9 @@ const MarketingAdmin = () => {
  const fetchData = async(selectedTab) => {
   switch(selectedTab){
     case 0:
-      return axios.get('http://localhost:5000/api/v1/allLeads').then((response) => response.data)
+      return axios.get('http://localhost:5000/api/v1/assignCaller').then((response) => response.data)
     case 1:
-      return axios.get('http://localhost:5000/api/v1/allCaller').then((response) => response.data)
+      return axios.get('http://localhost:5000/api/v1/allCallerData').then((response) => response.data)
     case 2:
       return axios.get('http://localhost:5000/api/v1/allUsers').then((response) => response.data)
       default:
@@ -79,7 +78,7 @@ const MarketingAdmin = () => {
             }`}
             onClick={() => setTab(0)}
           >
-            Lead Collectors
+            Assign Caller
           </h4>
           <h4
             className={` py-1.5 px-5 rounded-md hover:bg-primary hover:text-white duration-300 cursor-pointer ${
@@ -107,7 +106,7 @@ const MarketingAdmin = () => {
                    No Data Found
                  </p>
                ) : (
-               <LeadCollectorTable data={data}/>
+               <CallerAssignTable data={data}/>
                )}
              </>
             )}
@@ -120,55 +119,7 @@ const MarketingAdmin = () => {
                  </p>
                ) : (
                 <CallerTabTable data={data}/>
-                //  <>
-                //    <h2 className="text-2xl font-bold my-12">
-                //      Lead Collectors:
-                //    </h2>
-                //    <Table striped className="relative">
-                //      <Table.Head>
-                //        <Table.HeadCell className="text-start">
-                //          Name
-                //        </Table.HeadCell>
-                //        <Table.HeadCell className="text-start">
-                //          Phone
-                //        </Table.HeadCell>
-                //        <Table.HeadCell className="text-start">
-                //          FB Page Link
-                //        </Table.HeadCell>
-                //        <Table.HeadCell className="text-start">
-                //          Conversion Stage
-                //        </Table.HeadCell>
-                //        <Table.HeadCell className="text-start">
-                //          Reason For Not Conversion
-                //        </Table.HeadCell>
-                //        <Table.HeadCell className="text-start">
-                //          Meeting Schedule
-                //        </Table.HeadCell>
-                //        <Table.HeadCell className="text-start">
-                //          Edit
-                //        </Table.HeadCell>
-                //      </Table.Head>
-                //      <Table.Body className="divide-y">
-                //        {dummyDataLead?.map((item) => (
-                //          <Table.Row className="bg-gray-100" key={item?._id}>
-                //            <Table.Cell>{item.name}</Table.Cell>
-                //            <Table.Cell className="whitespace-wrap font-bold  min-w-[200px]">
-                //              {item.phone}
-                //            </Table.Cell>
-                //            <Table.Cell>{item.fbLink}</Table.Cell>
-                //            <Table.Cell>{item.conversionStage}</Table.Cell>
-                //            <Table.Cell className="max-w-[250px] whitespace-nowrap overflow-hidden overflow-ellipsis">
-                //              {item.reason}
-                //            </Table.Cell>
-                //            <Table.Cell>{item.meeting}</Table.Cell>
-                //            <Table.Cell>
-                //              <FaEdit className="text-cyan-500 cursor-pointer" />
-                //            </Table.Cell>
-                //          </Table.Row>
-                //        ))}
-                //      </Table.Body>
-                //    </Table>
-                //  </>
+                
                )}
              </>
             )}

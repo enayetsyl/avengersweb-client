@@ -1,7 +1,6 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import Loader from '../../components/common/Loader';
 import { toast } from 'react-toastify';
-import { AuthContext } from '../../Provider/AuthProvider';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router';
 import { addLeadData } from '../../lib/leadFunction';

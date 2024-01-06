@@ -1,8 +1,9 @@
-import { useContext, useEffect, useState } from 'react';
+import {  useState } from 'react';
 import logo from '/images/logo.webp';
-import { AuthContext } from '../../Provider/AuthProvider';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
+import { motion } from "framer-motion"
+
 
 const MarketingNav = () => {
   const [activeProfile, setActiveProfile] = useState(false);
@@ -19,12 +20,29 @@ const MarketingNav = () => {
       <div className="min-h-20 flex justify-center items-center py-4">
         <img src={logo} alt="Logo" className="h-16 object-cover" />
       </div>
-
+  
       <div className="bg-primary text-white font-primary w-full py-4">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-end items-center">
+        <div className="container mx-auto px-4 flex justify-between items-center">
+          <div className=''>
+            {
+              user?.role === "LeadCollector" ? (<Link to={'/marketing/lead-collector/add'}>
+              <motion.button className='bg-black py-2 px-3 rounded-md font-bold '
+                  initial={{scale: 1.1, y:'-50vh'}}
+                  animate={{y: 0}}
+                  whileHover={{scale:1.3}}
+                  transition={{ type: 'spring', stiffness: 130, delay: 0.2}}
+              >Add Lead</motion.button>
+              </Link>) : ''
+            }
+          </div>
+          <motion.div className="flex justify-end items-center"
+          initial={{x:'40vw'}}
+          animate={{x: 0}}
+          transition={{type:'spring', stiffness: 100, delay:1.4}}
+          >
               <h1 className='mr-2'>{user?.name}</h1>
-            <div className="relative bg-gray-100 rounded-full cursor-pointer">
+            <motion.div className="relative bg-gray-100 rounded-full cursor-pointer"           
+            >
               <img
                 src="https://res.cloudinary.com/djlghivmg/image/upload/v1703938300/augm4ol82visdofnogbh.jpg"
                 alt=""
@@ -40,8 +58,8 @@ const MarketingNav = () => {
                   </h4>
                 </div>
               )}
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
     </>

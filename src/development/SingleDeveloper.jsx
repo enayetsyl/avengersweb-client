@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
 import { developerDataPost, getDeveloperData } from "../lib/devloperfunction";
 import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 const tableHeadName = [
   "Business Name",
@@ -41,7 +42,19 @@ const SingleDeveloper = () => {
   })
 
   const handlePost = async(id) => {
-    await mutateAsync(id)
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Post it!"
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await mutateAsync(id)
+      }
+    });
   }
 
   return (

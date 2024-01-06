@@ -1,14 +1,13 @@
 import { Table } from 'flowbite-react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
-import { useContext } from 'react';
 import TableLoader from '../../components/common/TableLoader';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { AuthContext } from '../../Provider/AuthProvider';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { deleteLead, getSingleUserLeads, leadPost } from '../../lib/leadFunction';
 import useAuth from '../../hooks/useAuth';
+import { motion } from "framer-motion"
 
 const LeadCollector = () => {
   const queryClient = useQueryClient()  
@@ -19,7 +18,7 @@ const LeadCollector = () => {
     queryKey:['individualLeadCollectorData'],
     queryFn:() => getSingleUserLeads(userEmail)
   })
-
+console.log(data)
 const {mutateAsync: deleteMutation} = useMutation({
   mutationFn: (id) => deleteLead(id),
   onSuccess:(data) => {
@@ -84,7 +83,7 @@ const {mutateAsync: postMutation} = useMutation({
   const tableHeadData = ['Business Name', 'Phone', 'FB Page Name','FB Page Link', 'Email','Business Type', 'Website Available','Existing Website Link', 'Edit','Delete','Post for Production' ]
 
   return (
-    <div className="my-12 overflow-x-auto h-[700px] md:h-auto">
+    <motion.div className="my-12 overflow-x-auto h-[700px] md:h-auto">
       <div className="container px-4 mx-auto">
         <h2 className="text-center font-bold text-3xl md:text-5xl mb-12">
           Lead Collector
@@ -115,7 +114,7 @@ const {mutateAsync: postMutation} = useMutation({
                       <Table.Cell>{item.facebookAddress}</Table.Cell>
                       <Table.Cell>{item.email}</Table.Cell>
                       <Table.Cell>{item.businessType}</Table.Cell>
-                      <Table.Cell>{item.websiteAvailabe === true ? 'Yes' : 'No'}</Table.Cell>
+                      <Table.Cell>{item.websiteAvailable ? 'Yes' : 'No'}</Table.Cell>
                       <Table.Cell>{item.existingWebsiteLink}</Table.Cell>
                       <Table.Cell>
                         <Link to={`/marketing/lead-collector/edit/${item._id}`}>
@@ -140,7 +139,7 @@ const {mutateAsync: postMutation} = useMutation({
           </>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

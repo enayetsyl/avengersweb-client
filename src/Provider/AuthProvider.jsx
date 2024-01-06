@@ -18,15 +18,12 @@ const AuthProvider = ({ children }) => {
     setLoading(false)
   },[])
 
-  // useEffect(() => {
-  //   const unSubscribe = onAuthStateChanged(auth, (currentUser => {
-  //     setUser(currentUser)
-  //     setLoading(false)
-  //   }))
-  //   return () => {
-  //     unSubscribe()
-  //   }
-  // },[])
+  useEffect(()=> {
+    if(!user){
+      sessionStorage.removeItem('token')
+    }
+  },[user])
+
 
  
   const authInfo = {

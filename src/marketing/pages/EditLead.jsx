@@ -4,12 +4,14 @@ import { toast } from 'react-toastify';
 import { useParams } from 'react-router';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { editLeadData, getEditLeadData } from '../../lib/leadFunction';
+import { useNavigate } from 'react-router';
 
 
 const EditLead = () => {
   const {id} = useParams()
   const [loading, setLoading] = useState(false);
   const [newData, setNewData] = useState(null)
+  const navigate = useNavigate()
   
   const {data} = useQuery({
     queryKey:['editLeadGetData',id ],
@@ -22,6 +24,7 @@ const EditLead = () => {
       console.log(data)
       toast.success('Lead successfully edited!');
       setLoading(false);
+      navigate('/marketing/lead-collector')
     }
   })
 

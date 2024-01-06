@@ -2,11 +2,15 @@ import { Table } from "flowbite-react";
 import { FaEdit } from "react-icons/fa";
 import TableLoader from "../../components/common/TableLoader";
 import { useQuery } from "@tanstack/react-query";
-import { getCallerData } from "../../lib/callerfunction";
 import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+import { getCallerData } from "../../lib/callerfunction";
 
-
+const formatDate = (dateString) => {
+  const options = {year: 'numeric', month:'short', day: 'numeric', hour:'numeric', minute:'numeric', hour12:true}
+  const formattedDate = new Date(dateString).toLocaleDateString('en-US', options)
+  return formattedDate
+}
 
 const tableHeadName = [
   "Business Name",
@@ -16,8 +20,9 @@ const tableHeadName = [
   "Mobile Number",
   "Our Created Website Link",
   "Marketing Message Sent",
+  "Marketing Message",
   "First Call Date",
-  "First Meeting Data",
+  "First Meeting Date",
   "Conversion Status",
   "Reason for Non-Conversion",
   "Edit",
@@ -28,12 +33,13 @@ const Caller = () => {
 
     const email = user.email;
 
+  
   const { data, isLoading: loading } = useQuery({
     queryKey: ["callerData"],
     queryFn: () => getCallerData(email),
   });
 
-
+console.log(data)
   return (
     <div className="my-12 overflow-x-auto h-[700px] md:h-auto">
       <div className="container px-4 mx-auto">
@@ -74,17 +80,22 @@ const Caller = () => {
                       </Table.Cell>
                       <Table.Cell>
                         {item.marketingMessageSent
-                          ? item.marketingMessageSent
+                          ? "Yes"
                           : "Not Sent"}
                       </Table.Cell>
                       <Table.Cell>
-                        {item.firstCallDate ? item.firstCallDate : "Not Called"}
+                        {item.messageSentAtFirstApproach
+                          ? item.messageSentAtFirstApproach
+                          : "Not Sent"}
                       </Table.Cell>
                       <Table.Cell>
-                        {item.firstMeetingDate ? item.firstMeetingDate : "Not Set"}
+                        {item.firstCallDate ? formatDate(item.firstCallDate) : "Not Called"}
                       </Table.Cell>
                       <Table.Cell>
-                        {item.converted ? item.converted : "No"}
+                        {item.firstMeetingDate ? formatDate(item.firstMeetingDate) : "Not Set"}
+                      </Table.Cell>
+                      <Table.Cell>
+                        {item.converted ? "Yes" : "No"}
                       </Table.Cell>
                       <Table.Cell>
                         {item.reasonForNonConversion

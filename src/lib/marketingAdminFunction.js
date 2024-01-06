@@ -6,12 +6,9 @@ export const callerData = async () => {
 }
 
 export const callerAssign = async(callerId, leadId) => {
-  console.log('caller id ', callerId)
-  console.log('lead id ', leadId)
   const result = await axios.patch(
   `http://localhost:5000/api/v1/assignCaller?callerId=${callerId}&leadId=${leadId}`
   )
-  console.log(result.data)
   return result.data
 }
 

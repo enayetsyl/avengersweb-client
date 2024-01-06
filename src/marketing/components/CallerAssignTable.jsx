@@ -5,7 +5,10 @@ import Loader from '../../components/common/Loader';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 
-const LeadCollectorTable = ({data}) => {
+
+const tableHeadName = ['Business Name', 'Facebook Page Name','Facebook Page Link','Business Type','Email','Website Available','Existing Website Link','Our Created Website Link','Caller Name','Select Caller','Assign Caller','Mobile Number']
+
+const CallerAssignTable = ({data}) => {
   // console.log(data)
   const [callerId, setCallerId] = useState(null)
   const [leadId, setLeadId] = useState(null)
@@ -19,7 +22,6 @@ const LeadCollectorTable = ({data}) => {
   const {mutateAsync} = useMutation({
     mutationFn:() => callerAssign(callerId, leadId),
     onSuccess:(data) => {
-      console.log(data)
       if(data === 'Caller Assigned Successfully'){
         toast.success('Caller Assigned Successfully')
         queryClient.invalidateQueries(['callerInfo'])
@@ -49,58 +51,18 @@ const LeadCollectorTable = ({data}) => {
   return (
     <>
     <h2 className="text-2xl font-bold my-12">
-      Lead Collectors:
+      Caller Assign Table:
     </h2>
     <Table striped className="relative">
       <Table.Head>
-        <Table.HeadCell className="text-start">
-          Business Name
-        </Table.HeadCell>
-        <Table.HeadCell className="text-start">
-          Facebook Page Name
-        </Table.HeadCell>
-        <Table.HeadCell className="text-start">
-          Facebook Page Link
-        </Table.HeadCell>
-        <Table.HeadCell className="text-start">
-          Business Type
-        </Table.HeadCell>
-        <Table.HeadCell className="text-start">
-          Email
-        </Table.HeadCell>
-        <Table.HeadCell className="text-start">
-         Website Available
-        </Table.HeadCell>
-        <Table.HeadCell className="text-start">
-          Existing Website Link
-        </Table.HeadCell>
-        <Table.HeadCell className="text-start">
-          Our Created Website Link
-        </Table.HeadCell>
-        <Table.HeadCell className="text-start">
-          Caller Name
-        </Table.HeadCell>
-        <Table.HeadCell className="text-start">
-          Assign Caller
-        </Table.HeadCell>
-        <Table.HeadCell className="text-start">
-          Mobile Number
-        </Table.HeadCell>
-        <Table.HeadCell className="text-start">
-          Marketing Message Sent
-        </Table.HeadCell>
-        <Table.HeadCell className="text-start">
-          First Call Date
-        </Table.HeadCell>
-        <Table.HeadCell className="text-start">
-          First Meeting Date
-        </Table.HeadCell>
-        <Table.HeadCell className="text-start">
-          Conversion Status
-        </Table.HeadCell>
-        <Table.HeadCell className="text-start">
-          Reason for non Conversion
-        </Table.HeadCell>
+        {
+          tableHeadName.map(name => (
+            <Table.HeadCell className="text-start" key={name}>
+            {name}
+          </Table.HeadCell>
+          ))
+        }
+        
       </Table.Head>
       <Table.Body className="divide-y">
         {data?.map((item) => (
@@ -122,9 +84,12 @@ const LeadCollectorTable = ({data}) => {
               {item.ourCreatedWebsiteLink}
             </Table.Cell>
             <Table.Cell>
+              {item.callerName ? item.callerName : "Not Assigned Yet"}
+            </Table.Cell>
+            <Table.Cell>
               <select name="callerSelect" id="callerSelect"
               onChange={e => handleCallerSelect(e, item._id)}
-              >
+              ><option>Select Caller</option>
                 {callerName?.map((caller) => (
                   <option key={caller._id} value={caller._id}>{caller.name}</option>
                 ))}
@@ -138,22 +103,7 @@ const LeadCollectorTable = ({data}) => {
             <Table.Cell>
               {item.mobileNumber}
             </Table.Cell>
-            <Table.Cell>
-              {item.marketingMessageSent ? 'Yes' : 'No'}
-            </Table.Cell>
-            <Table.Cell>
-              {item.firstCallDate ? item.firstCallDate : 'N/A'}
-            </Table.Cell>
-            <Table.Cell>
-              {item.firstMeetingDate ? item.firstMeetingDate : 'N/A'}
-            </Table.Cell>
-            <Table.Cell>
-              {item.converted ? 'Converted' : 'Not Converted'}
-            </Table.Cell>
-            <Table.Cell>
-              {item.reasonForNonConversion ? item.reasonForNonConversion : "N/A"
-}
-            </Table.Cell>
+            
           </Table.Row>
         ))}
       </Table.Body>
@@ -162,4 +112,4 @@ const LeadCollectorTable = ({data}) => {
   );
 };
 
-export default LeadCollectorTable;
+export default CallerAssignTable;

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -25,13 +25,13 @@ const DeveloperEdit = () => {
       if(data){
         setLoading(false)
       toast.success('Lead successfully updated!');
-      queryClient.invalidateQueries(['developerData'])
+      queryClient.invalidateQueries(['developerData','developerEditData'])
       navigate('/development/developer')
       }
     }
   })
 
-  
+ 
   if(isLoading){
     return <Loader/>
   }
@@ -41,6 +41,8 @@ const DeveloperEdit = () => {
     setLoading(true);
     await mutateAsync()
   };
+
+
   return (
     <div className="py-12">
       <div className="container mx-auto px-4">
@@ -64,7 +66,7 @@ const DeveloperEdit = () => {
                 name="businessName"
                 className="input-with-shadow"
                 readOnly
-                defaultValue={data.businessName}
+                value={data.businessName}
               />
             </div>
             {/* Facebook Page Name */}
@@ -127,7 +129,7 @@ const DeveloperEdit = () => {
                 readOnly
                 name="mobileNumber"
                 className="input-with-shadow"
-                defaultValue={data.mobileNumber}
+                value={data.mobileNumber}
               />
             </div>
             {/* OUR CREATED WEBSITE LINK */}
@@ -140,7 +142,6 @@ const DeveloperEdit = () => {
                 placeholder="Our Created Website Link"
                 className="input-with-shadow"
                 name="ourCreatedWebsiteLink"
-                defaultValue={data.ourCreatedWebsiteLink}
                 onChange={(e)=> setFormData({ourCreatedWebsiteLink: e.target.value})}
               />
             </div>
