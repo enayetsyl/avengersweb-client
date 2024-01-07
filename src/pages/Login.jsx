@@ -33,7 +33,7 @@ const [loading, setLoading] = useState(false)
           const email = result.data.userInfo.email;
           console.log(email)
           try {
-            const res = await axios.post('http://localhost:5000/api/v1/jwt', email)
+            const res = await axios.post(`http://localhost:5000/api/v1/jwt?email=${email}`)
             console.log(res.data.token)
             if(res.data.token){
               const token = res?.data?.token

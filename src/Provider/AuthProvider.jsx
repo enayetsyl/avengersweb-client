@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from 'react';
+import Loader from '../components/common/Loader';
 
 export const AuthContext = createContext();
 // eslint-disable-next-line react/prop-types
@@ -11,18 +12,26 @@ const AuthProvider = ({ children }) => {
     sessionStorage.removeItem('userInfo');
     setUser(null);
   }
-
+  
   useEffect(() => {
     const userExists = JSON.parse(sessionStorage.getItem('userInfo'));
     setUser(userExists);
     setLoading(false)
   },[])
+  
+  // useEffect(()=> {
+  //   if(!user){
+  //     localStorage.removeItem('token')
+  //   }
+  // },[user])
 
-  useEffect(()=> {
-    if(!user){
-      sessionStorage.removeItem('token')
-    }
-  },[user])
+
+  if(loading){
+    return <Loader/>
+  }
+
+
+
 
 
  

@@ -3,7 +3,7 @@ import axios from "axios"
 export const getCallerData = async (email) => {
   const result = await axios.get(`http://localhost:5000/api/v1/callerLead?email=${email}`,{
     headers: {
-      authorization: `Bearer ${sessionStorage.getItem('token')}`
+      authorization: `Bearer ${localStorage.getItem('token')}`
     }
   })
   return result.data

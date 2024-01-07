@@ -8,12 +8,17 @@ import { updateUserRole } from '../../lib/getfunction';
 import Loader from '../../components/common/Loader';
 import CallerTabTable from './CallerTabTable';
 import CallerAssignTable from '../components/CallerAssignTable';
+import useAuth from '../../hooks/useAuth';
 
 
 const MarketingAdmin = () => {
   const [tab, setTab] = useState(0)
   const [role, setRole] = useState({})
   const queryClient = useQueryClient()
+
+  const {user} = useAuth()
+  console.log(user.email)
+  const email= user?.email
  
   // Fetching data
   const {data, isLoading, isError} = useQuery({
@@ -43,7 +48,11 @@ const MarketingAdmin = () => {
     case 1:
       return axios.get('http://localhost:5000/api/v1/allCallerData').then((response) => response.data)
     case 2:
-      return axios.get('http://localhost:5000/api/v1/allUsers').then((response) => response.data)
+      return axios.get(`http://localhost:5000/api/v1/allUsers?email=${email}`, {
+        headers: {
+          authorization: `Bearer ${sessionStorage.getItem('token')}`
+        }
+      }).then((response) => response.data)
       default:
         return []
   }

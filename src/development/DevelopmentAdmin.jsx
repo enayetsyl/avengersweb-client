@@ -6,13 +6,15 @@ import { toast } from "react-toastify";
 import Loader from "../components/common/Loader";
 import { updateUserRole } from "../lib/getfunction";
 import AdminDeveloperTable from "./components/AdminDeveloperTable";
+import useAuth from "../hooks/useAuth";
 
 const DevelopmentAdmin = () => {
   const [tab, setTab] = useState(0);
   const [role, setRole] = useState({});
   const [isButtonDisabled, setButtonDisabled] = useState(true)
   const queryClient = useQueryClient();
-
+  const {user} = useAuth()
+  const email = user.email;
   const userTableHead = ["Name", "Email", "Role", "Select Role", "Change Role"];
   
   // Fetching data
@@ -45,7 +47,11 @@ const DevelopmentAdmin = () => {
           .then((response) => response.data);
       case 1:
         return axios
-          .get("http://localhost:5000/api/v1/developer")
+          .get(`http://localhost:5000/api/v1/developer?email=${email}`, {
+            headers: {
+              authorization: `Bearer ${sessionStorage.getItem('token')}`
+            }
+          })
           .then((response) => response.data);
       default:
         return [];

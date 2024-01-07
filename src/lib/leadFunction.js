@@ -27,7 +27,12 @@ export const deleteLead = async (id) => {
 // FOR AddLead.jsx file
 
 export const addLeadData = async (data) => {
-  const result = await axios.post(`http://localhost:5000/api/v1/addLead`, data)
+  const result = await axios.post(`http://localhost:5000/api/v1/addLead`, data, {
+    headers: {
+      authorization: `Bearer ${sessionStorage.getItem('token')}`
+    }
+  })
+  console.log(result)
   return result.data
 }
 
