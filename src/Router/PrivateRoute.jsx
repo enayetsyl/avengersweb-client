@@ -1,11 +1,10 @@
-import { useContext, useEffect, useState } from 'react';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../Provider/AuthProvider';
+import { Navigate, useLocation } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
 
 // eslint-disable-next-line react/prop-types
 const PrivateRoute = ({ children, allowedRoles }) => {
   const location = useLocation();
-  const {user, loading} = useContext(AuthContext)
+  const {user, loading} = useAuth()
  
 
   if(loading){
