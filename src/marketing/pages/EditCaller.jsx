@@ -16,36 +16,19 @@ const EditCaller = () => {
     queryFn:() => callerEditDataGet(id)
   })
 
-
-  
-   // Extract the date value from the server response
-   const defaultFirstCallDate = data?.firstCallDate;
-
-   const defaultFirstMeetingDate = data?.firstMeetingDate
-
-   // Format the date for the input field (if it exists)
-   const formattedDefaultFirstCallDate =
-     defaultFirstCallDate && new Date(defaultFirstCallDate).toISOString().slice(0, -8);
-
-   const formattedDefaultFirstMeetingDate =
-   defaultFirstMeetingDate && new Date(defaultFirstMeetingDate).toISOString().slice(0, -8);
-
-console.log(formattedDefaultFirstCallDate)
-console.log(formattedDefaultFirstMeetingDate)
  
   const [formData, setFormData] = useState({
      marketingMessageSent: data?.marketingMessageSent || false,
     messageSentAtFirstApproach: data?.messageSentAtFirstApproach || '',
     converted: data?.converted || false,
     reasonForNonConversion: data?.reasonForNonConversion || '',
-    firstCallDate: formattedDefaultFirstCallDate || '',
-    firstMeetingDate: formattedDefaultFirstMeetingDate || '',
+    firstCallDate: data.firstCallDate || '',
+    firstMeetingDate: data.firstMeetingDate || '',
   })
-console.log(formData)
   const { mutateAsync } = useMutation({
     mutationFn:() => callerUpdateData(id, formData),
     onSuccess:(data) => {
-      console.log(data)
+      // console.log(data)
       setLoading(false)
       toast.success('Lead successfully edited!');
       queryClient.invalidateQueries(['callerData', 'callerEditData'])
@@ -71,7 +54,6 @@ console.log(formData)
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    console.log(formData)
     await mutateAsync()
   };
   return (
@@ -194,7 +176,7 @@ console.log(formData)
                 type="checkbox"
                 name="marketingMessageSent"
                 className="input-with-shadow "
-                checked={formData?.marketingMessageSent}
+                defaultChecked={data?.marketingMessageSent}
                 onChange={handleChange}
               />
             </div>
@@ -209,7 +191,7 @@ console.log(formData)
                 placeholder="Message Sent At First Approach"
                 className="input-with-shadow"
                 name="messageSentAtFirstApproach"
-                value={formData?.messageSentAtFirstApproach}
+                defaultValue={data?.messageSentAtFirstApproach}
                 onChange={handleChange}
               />
             </div>
@@ -226,7 +208,7 @@ console.log(formData)
                 type="checkbox"
                 name="converted"
                 className="input-with-shadow"
-                checked={formData?.converted}
+                defaultChecked={data?.converted}
                 onChange={handleChange}
               />
             </div>
@@ -241,7 +223,7 @@ console.log(formData)
                 placeholder="Reason for Non-Conversion"
                 className="input-with-shadow"
                 name="reasonForNonConversion"
-                value={formData?.reasonForNonConversion}
+                defaultValue={data?.reasonForNonConversion}
                 onChange={handleChange}
               />
             </div>
@@ -258,7 +240,7 @@ console.log(formData)
                 type="datetime-local"
                 className="input-with-shadow"
                 name="firstCallDate"
-                value={formData?.firstCallDate || ''
+                defaultValue={new Date (data?.firstCallDate).toISOString().slice(0, -8)
                 }
                 onChange={handleChange}
               />
@@ -274,7 +256,7 @@ console.log(formData)
                 type="datetime-local"
                 className="input-with-shadow"
                 name="firstMeetingDate"
-              value={formData?.firstMeetingDate}
+              defaultValue={new Date (data?.firstMeetingDate).toISOString().slice(0, -8)}
                 onChange={handleChange}
               />
             </div>

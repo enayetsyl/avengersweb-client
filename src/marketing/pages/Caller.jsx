@@ -39,7 +39,6 @@ const Caller = () => {
     queryFn: () => getCallerData(email),
   });
 
-console.log(data)
   return (
     <div className="my-12 overflow-x-auto h-[700px] md:h-auto">
       <div className="container px-4 mx-auto">
@@ -50,7 +49,7 @@ console.log(data)
           <TableLoader />
         ) : (
           <>
-            {data.length === 0 ? (
+            {data?.length === 0 ? (
               <p className="text-center text-xl font-semibold">No Data Found</p>
             ) : (
               <Table striped className="relative">
