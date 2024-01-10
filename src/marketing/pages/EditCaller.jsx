@@ -4,12 +4,16 @@ import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { callerEditDataGet, callerUpdateData } from '../../lib/callerfunction';
+import useAuth from '../../hooks/useAuth';
 
 const EditCaller = () => {
   const {id} = useParams()
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate();
   const queryClient = useQueryClient()
+  const { user } = useAuth()
+  const timestamp = new Date()
+  const userEmail = user?.email;
 
   const {data, isLoading} = useQuery({
     queryKey: ['callerEditData'],
@@ -22,9 +26,12 @@ const EditCaller = () => {
     messageSentAtFirstApproach: data?.messageSentAtFirstApproach || '',
     converted: data?.converted || false,
     reasonForNonConversion: data?.reasonForNonConversion || '',
-    firstCallDate: data.firstCallDate || '',
-    firstMeetingDate: data.firstMeetingDate || '',
+    firstCallDate: data?.firstCallDate || '',
+    firstMeetingDate: data?.firstMeetingDate || '',
+    userEmail,
+    timestamp,
   })
+
   const { mutateAsync } = useMutation({
     mutationFn:() => callerUpdateData(id, formData),
     onSuccess:(data) => {
@@ -56,6 +63,8 @@ const EditCaller = () => {
     setLoading(true);
     await mutateAsync()
   };
+
+
   return (
     <div className="py-12">
       <div className="container mx-auto px-4">

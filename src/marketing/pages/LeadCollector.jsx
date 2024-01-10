@@ -22,7 +22,6 @@ console.log(data)
 const {mutateAsync: deleteMutation} = useMutation({
   mutationFn: (id) => deleteLead(id),
   onSuccess:(data) => {
-    console.log('from delete mutation function', data)
     if(data.deletedCount > 0){
       toast.success('Lead deleted successfully.')
       queryClient.invalidateQueries(['individualLeadCollectorData'])

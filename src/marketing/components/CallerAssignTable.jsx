@@ -96,7 +96,7 @@ const CallerAssignTable = ({data}) => {
               </select>
             </Table.Cell>
             <Table.Cell>
-              <button className='py-1.5 px-5 rounded-md hover:bg-primary hover:text-white duration-300 cursor-pointer'
+              <button className='py-1.5 px-5 rounded-md bg-black hover:bg-primary text-white duration-300 cursor-pointer'
               onClick={() => handleAssignCaller(item._id)}
               >Assign</button>
             </Table.Cell>

@@ -4,23 +4,31 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { developerEditDataGet, developerUpdateData } from '../lib/devloperfunction';
 import Loader from '../components/common/Loader';
+import useAuth from '../hooks/useAuth';
 
 const DeveloperEdit = () => {
   const {id} = useParams()
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate();
   const queryClient = useQueryClient()
-
-
+  const {user} = useAuth()
+  const userEmail = user.email;
+  console.log(userEmail)
+  const timestamp = new Date()
+  console.log(timestamp)
   const {data, isLoading} = useQuery({
     queryKey: ['developerEditData'],
     queryFn:() => developerEditDataGet(id)
   })
 
   const [formData, setFormData] = useState('')
-
+  const devEditData = {
+    ourCreatedWebsiteLink: formData,
+    userEmail,
+    timestamp,
+  }
   const { mutateAsync } = useMutation({
-    mutationFn:() => developerUpdateData(id, formData),
+    mutationFn:() => developerUpdateData(id, devEditData),
     onSuccess:(data) => {
       if(data){
         setLoading(false)
@@ -142,7 +150,7 @@ const DeveloperEdit = () => {
                 placeholder="Our Created Website Link"
                 className="input-with-shadow"
                 name="ourCreatedWebsiteLink"
-                onChange={(e)=> setFormData({ourCreatedWebsiteLink: e.target.value})}
+                onChange={(e)=> setFormData( e.target.value)}
               />
             </div>
           </div>

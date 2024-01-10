@@ -61,7 +61,7 @@ const SingleDeveloper = () => {
     <div className="my-12 overflow-x-auto h-[700px] md:h-auto">
       <div className="container px-4 mx-auto">
         <h2 className="text-center font-bold text-3xl md:text-5xl mb-12">
-          Caller
+          Developer
         </h2>
         {loading ? (
           <TableLoader />

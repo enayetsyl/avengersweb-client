@@ -23,17 +23,20 @@ const AddLead = () => {
     existingWebsiteLink:'',
   })
   
+  const entryDate = new Date();
   const otherField = {
     firstCallDate: '', 
     firstMeetingDate: '',
     converted: false,
     reasonForNonConversion: '',
-    websiteCreation: '',
     ourCreatedWebsiteLink: '',
     messageSentAtFirstApproach: '',
     marketingMessageSent: false,
+    entryDate
   }
   const newLeadData = {...userData, ...otherField, entryBy}
+
+  console.log(newLeadData)
 
   const {mutateAsync} = useMutation({
     mutationFn:(newLeadData) => addLeadData(newLeadData),

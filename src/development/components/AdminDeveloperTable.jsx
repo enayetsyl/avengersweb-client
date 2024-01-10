@@ -7,9 +7,10 @@ import { developerAssign, developerData } from '../../lib/devloperfunction';
 
 const AdminDeveloperTable = ({data}) => {
   const [developerId, setDeveloperId] = useState(null)
-  console.log(data)
   const [leadId, setLeadId] = useState(null)
+  
   const queryClient = useQueryClient()
+ 
   const tableHeadData = ['Business Name', 'Facebook Page Name','Facebook Page Link','Business Type','Email','Website Available','Existing Website Link','Our Created Website Link','Assigned Developer','Developer Name','Assign Developer',' Mobile Number','Marketing Message Sent','First Call Date','First Meeting Date','Conversion Status','Reason for non Conversion',]
 
   const {data:developerName, isLoading} = useQuery({
@@ -20,7 +21,6 @@ const AdminDeveloperTable = ({data}) => {
   const {mutateAsync} = useMutation({
     mutationFn:() => developerAssign(developerId, leadId),
     onSuccess:(data) => {
-      console.log(data)
       if(data === 'Developer Assigned Successfully'){
         toast.success('Developer Assigned Successfully')
         queryClient.invalidateQueries(['developerInfo'])
@@ -99,7 +99,7 @@ const AdminDeveloperTable = ({data}) => {
               </select>
             </Table.Cell>
             <Table.Cell>
-              <button className='py-1.5 px-5 rounded-md hover:bg-primary hover:text-white duration-300 cursor-pointer'
+              <button className='py-1.5 px-5 rounded-md bg-black text-white hover:bg-primary  duration-300 cursor-pointer'
               onClick={() => handleAssignDeveloper(item._id)}
               >Assign</button>
             </Table.Cell>

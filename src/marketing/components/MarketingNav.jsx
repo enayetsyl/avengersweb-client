@@ -34,6 +34,25 @@ const MarketingNav = () => {
               >Add Lead</motion.button>
               </Link>) : ''
             }
+            {
+              user?.role === "marketingAdmin" ? (<div className='flex gap-5'>
+              <Link to={'/marketing'}>
+              <motion.button className='bg-black py-2 px-3 rounded-md font-bold '
+                  initial={{scale: 1.1, y:'-50vh'}}
+                  animate={{y: 0}}
+                  whileHover={{scale:1.3}}
+                  transition={{ type: 'spring', stiffness: 130, delay: 0.2}}
+              >Home</motion.button>
+              </Link><Link to={'/marketing/dashboard'}>
+              <motion.button className='bg-black py-2 px-3 rounded-md font-bold '
+                  initial={{scale: 1.1, y:'-50vh'}}
+                  animate={{y: 0}}
+                  whileHover={{scale:1.3}}
+                  transition={{ type: 'spring', stiffness: 130, delay: 0.2}}
+              >Dashboard</motion.button>
+              </Link>
+              </div>) : ''
+            }
           </div>
           <motion.div className="flex justify-end items-center"
           initial={{x:'40vw'}}

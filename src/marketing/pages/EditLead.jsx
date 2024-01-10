@@ -5,6 +5,7 @@ import { useParams } from 'react-router';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { editLeadData, getEditLeadData } from '../../lib/leadFunction';
 import { useNavigate } from 'react-router';
+import useAuth from '../../hooks/useAuth';
 
 
 const EditLead = () => {
@@ -12,11 +13,16 @@ const EditLead = () => {
   const [loading, setLoading] = useState(false);
   const [newData, setNewData] = useState(null)
   const navigate = useNavigate()
-  
+  const {user } = useAuth()
+  const userEmail = user.email;
+  const timestamp = new Date()
+
   const {data} = useQuery({
     queryKey:['editLeadGetData',id ],
     queryFn:() =>  getEditLeadData(id),
   })
+
+  console.log(newData)
 
    const { mutateAsync } = useMutation({
     mutationFn: () => editLeadData(newData, id),
@@ -39,7 +45,9 @@ const EditLead = () => {
     businessType:e.target.businessType.value,
     websiteAvailable:e.target.websiteAvailable.checked,
     email:e.target.email.value,
-    existingWebsiteLink:e.target.existingWebsiteLink.value
+    existingWebsiteLink:e.target.existingWebsiteLink.value,
+    userEmail,
+    timestamp,
     }
     setNewData(newData)
     await mutateAsync(newData, id)
