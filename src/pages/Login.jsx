@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { loginUser } from "../lib/getfunction";
-import { AuthContext } from "../Provider/AuthProvider";
+import { motion } from "framer-motion"
 import useAuth from "../hooks/useAuth";
 import axios from "axios";
 
@@ -85,10 +85,17 @@ const [loading, setLoading] = useState(false)
             className="w-full flex flex-col gap-y-4"
             onSubmit={handleLoginSubmit}
           >
-            <h3 className="accent-color text-3xl text-center font-bold capitalize my-6">
+            <motion.h3 
+            initial={{opacity: 0}}
+            animate={{opacity:1}}
+            transition={{duration: 6}}
+            className="accent-color text-3xl text-center font-bold capitalize my-6">
               Enter your login details
-            </h3>
-            <input
+            </motion.h3>
+            <motion.input
+             initial={{x:'-500vw'}}
+             animate={{x: 0}}
+             transition={{ type: 'spring', stiffness: 50, delay: 0.2}}
               type="text"
               placeholder="Your Email"
               value={email}
@@ -96,14 +103,21 @@ const [loading, setLoading] = useState(false)
               className="w-full min-h-[55px] shadow-light py-2 px-3 leading-6 focus:outline-cyan-500 rounded-md"
             />
             <div className="relative">
-              <input
+              <motion.input
+
+initial={{x:'500vw'}}
+animate={{x: 0}}
+transition={{ type: 'spring', stiffness: 50, delay: 2}}
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full min-h-[55px] shadow-light py-2 px-3 leading-6 focus:outline-cyan-500 rounded-md"
               />
-              <div
+              <motion.div
+              initial={{x:'500vw'}}
+              animate={{x: 0}}
+              transition={{ type: 'spring', stiffness: 20, delay: 3}}
                 className="absolute right-5 top-1/2 -translate-y-1/2 cursor-pointer hover:text-cyan-500"
                 onClick={() => setShowPassword((prev) => !prev)}
               >
@@ -112,16 +126,20 @@ const [loading, setLoading] = useState(false)
                 ) : (
                   <FaRegEyeSlash size={20} />
                 )}
-              </div>
+              </motion.div>
             </div>
-            <button
+            <motion.button
+            initial={{ scale:1, y:'100vh'}}
+            animate={{y: 0}}
+            whileHover={{scale:1.3}}
+            transition={{ type: 'spring', stiffness: 200, delay: 5}}
               type="submit"
               className={`bg-cyan-500 hover:bg-cyan-600 text-white py-4 px-6 w-full rounded-md uppercase duration-300 leading-none font-bold text-lg ${
                 loading && "cursor-not-allowed opacity-50"
               }`}
             >
               Log In
-            </button>
+            </motion.button>
             <button
               type="submit"
               className="bg-rose-500 hover:bg-teal-600 text-white py-4 px-6 w-full rounded-md uppercase duration-300 leading-none font-bold text-lg"
