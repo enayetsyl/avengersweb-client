@@ -353,7 +353,7 @@ router.get("/weekWiseLeadCount", async (req, res) => {
 
 - startOfYear is a variable that holds current year starting date.
 
-- const weeksFromStart = Math.floor(((today - startOfYear) / (7 _ 24 _ 60 _ 60 _ 1000))); (today - startOfYear) calculate the time difference in milliseconds between today and start of the year. (7 _ 24 _ 60 _ 60 _ 1000) represents number of milliseconds in a week. When we divide the time difference by the number of milliseconds in a week we get number of weeks since the start of the year. Math.floor rounds down the result to the nearest integer to get whole week. We can use Math.celi to round up the result. weekFromStart hold the value of number of weeks passed since the start of the year.
+- const weeksFromStart = Math.floor(((today - startOfYear) / (7 * 24 * 60 * 60 * 1000))); (today - startOfYear) calculate the time difference in milliseconds between today and start of the year. (7 * 24 * 60 * 60 * 1000) represents number of milliseconds in a week. When we divide the time difference by the number of milliseconds in a week we get number of weeks since the start of the year. Math.floor rounds down the result to the nearest integer to get whole week. We can use Math.celi to round up the result. weekFromStart hold the value of number of weeks passed since the start of the year.
 
 - for(let i = weeksFromStart; i >= 0; i--) in this loop condition i = number of weeks from the start of the year. i >=0 gives the condition that the loop will run until the value of i is greater than or equal to 0. i-- is decrementing the value of i so the loop will start from current week and iterate backs to the first week of the year.
 

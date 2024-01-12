@@ -20,6 +20,7 @@ import SingleDeveloper from '../development/SingleDeveloper';
 import DeveloperEdit from '../development/DeveloperEdit';
 import MarketingDashboard from '../marketing/pages/MarketingDashboard';
 import CallerDashboard from '../marketing/pages/CallerDashboard';
+import DeveloperDashboard from '../development/DeveloperDashboard';
 
 const router = createBrowserRouter([
   {
@@ -125,6 +126,14 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute allowedRoles={['developmentAdmin']}>
           <DevelopmentAdmin />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: '/development/dashboard',
+        element: (
+          <PrivateRoute allowedRoles={['developmentAdmin']}>
+          <DeveloperDashboard />
           </PrivateRoute>
         ),
       },
