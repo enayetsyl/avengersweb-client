@@ -43,13 +43,22 @@ const MarketingNav = () => {
                   whileHover={{scale:1.3}}
                   transition={{ type: 'spring', stiffness: 130, delay: 0.2}}
               >Home</motion.button>
-              </Link><Link to={'/marketing/dashboard'}>
+              </Link>
+              <Link to={'/marketing/lead-collector-dashboard'}>
               <motion.button className='bg-black py-2 px-3 rounded-md font-bold '
                   initial={{scale: 1.1, y:'-50vh'}}
                   animate={{y: 0}}
                   whileHover={{scale:1.3}}
                   transition={{ type: 'spring', stiffness: 130, delay: 0.2}}
-              >Dashboard</motion.button>
+              >Lead Dashboard</motion.button>
+              </Link>
+              <Link to={'/marketing/caller-dashboard'}>
+              <motion.button className='bg-black py-2 px-3 rounded-md font-bold '
+                  initial={{scale: 1.1, y:'-50vh'}}
+                  animate={{y: 0}}
+                  whileHover={{scale:1.3}}
+                  transition={{ type: 'spring', stiffness: 130, delay: 0.2}}
+              >Caller Dashboard</motion.button>
               </Link>
               </div>) : ''
             }

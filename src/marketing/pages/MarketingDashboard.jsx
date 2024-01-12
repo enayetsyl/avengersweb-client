@@ -1,5 +1,3 @@
-// import { Pie } from 'react-chartjs-2';
-// import BarChart from '../components/dashboard/BarChart';
 
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -10,17 +8,6 @@ import { Pie } from "react-chartjs-2";
 const options = {
   responsive: true,
 };
-
-// const labels = [
-//   'Saturday',
-//   'Sunday',
-//   'Monday',
-//   'Tuesday',
-//   'Wednesday',
-//   'Thusday',
-//   'Friday',
-// ];
-
 
 
 const MarketingDashboard = () => {
@@ -86,9 +73,7 @@ const MarketingDashboard = () => {
 
   const monthWiseCount = monthWiseLeadCount?.map(item => item.monthWiseCount)
   
-  const date = last7DaysLeadCount.map(item => item.date)
-
-  // const weekStartDate = weekWiseLeadCount?.map((item, index) => `Week ${index + 1}`)
+  const date = last7DaysLeadCount?.map(item => item.date)
 
   const monthStartDate = monthWiseLeadCount?.map(item => item.monthStart)
 
