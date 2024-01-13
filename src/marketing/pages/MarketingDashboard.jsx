@@ -4,6 +4,14 @@ import axios from "axios";
 import BarChart from "../../components/Dashboard/BarChart";
 import Loader from "../../components/common/Loader";
 import { Pie } from "react-chartjs-2";
+import {
+  Stat,
+  StatLabel,
+  StatNumber,
+  StatHelpText,
+  StatArrow,
+  StatGroup,
+} from '@chakra-ui/react'
 
 const options = {
   responsive: true,
@@ -138,10 +146,42 @@ const MarketingDashboard = () => {
     <div className="my-12 md:my-20">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 justify-center text-center items-center mb-32 gap-5 text-2xl">
-          <h4 className=" font-semibold bg-slate-400 px-8 py-14 rounded-lg">Today's Lead Collection: {sameDayLeadCount?.todayLeadCount}</h4> 
-          <h4 className=" font-semibold bg-slate-400 px-8 py-14 rounded-lg">This week Lead Collection: {lastWeekLeadCount?.lastWeekLeadCount}</h4>
-          <h4 className=" font-semibold bg-slate-400 px-8 py-14 rounded-lg">This Month Lead Collection: {thisMonthLead?.thisMonthLeadCount}</h4>
-          <h4 className=" font-semibold bg-slate-400 px-8 py-14 rounded-lg">This Year Lead Collection: {thisYearLead?.thisYearLeadCount}</h4>
+          <Stat  variant='outline'
+          border='2px'
+          borderColor='pink'
+          borderRadius='10px'
+          py='25px'
+          >
+            <StatLabel>Today's Lead Collection</StatLabel>
+            <StatNumber>{sameDayLeadCount?.todayLeadCount}</StatNumber>
+          </Stat>
+          <Stat  variant='outline'
+          border='2px'
+          borderColor='pink'
+          borderRadius='10px'
+          py='25px'
+          >
+            <StatLabel>This week Lead Collection</StatLabel>
+            <StatNumber>{lastWeekLeadCount?.lastWeekLeadCount}</StatNumber>
+          </Stat>
+          <Stat  variant='outline'
+          border='2px'
+          borderColor='pink'
+          borderRadius='10px'
+          py='25px'
+          >
+            <StatLabel>This Month Lead Collection</StatLabel>
+            <StatNumber>{thisMonthLead?.thisMonthLeadCount}</StatNumber>
+          </Stat>
+          <Stat  variant='outline'
+          border='2px'
+          borderColor='pink'
+          borderRadius='10px'
+          py='25px'
+          >
+            <StatLabel>This Year Lead Collection</StatLabel>
+            <StatNumber>{thisYearLead?.thisYearLeadCount}</StatNumber>
+          </Stat>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
           <div className="flex flex-col items-center gap-5">
@@ -158,16 +198,16 @@ const MarketingDashboard = () => {
           <BarChart data={weekWiseData} options={options} />
           </div>
           <div className="flex flex-col gap-5 h-96">
-          <h4 className="text-center font-bold text-2xl">Weekly Day Wise Lead Collection</h4>
+          <h4 className="text-center font-bold text-2xl">Week Wise Lead Collection</h4>
             <div className="h-72 flex justify-center"><Pie data={weekWiseData} options={options} /></div>
           </div>
           {/* Month wise chart */}
           <div className="flex flex-col items-center gap-5">
-          <h4 className="text-center font-bold text-2xl">Week Wise Lead Collection</h4>
+          <h4 className="text-center font-bold text-2xl">Month Wise Lead Collection</h4>
           <BarChart data={monthWiseData} options={options} />
           </div>
           <div className="flex flex-col gap-5 h-96">
-          <h4 className="text-center font-bold text-2xl">Weekly Day Wise Lead Collection</h4>
+          <h4 className="text-center font-bold text-2xl">Month Wise Lead Collection</h4>
             <div className="h-72 flex justify-center"><Pie data={monthWiseData} options={options} /></div>
           </div>
         </div>

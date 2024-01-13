@@ -1,4 +1,4 @@
-import { Table } from 'flowbite-react';
+// import { Table } from 'flowbite-react';
 import { FaEdit } from 'react-icons/fa';
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -9,6 +9,15 @@ import Loader from '../../components/common/Loader';
 import CallerTabTable from './CallerTabTable';
 import CallerAssignTable from '../components/CallerAssignTable';
 import useAuth from '../../hooks/useAuth';
+import { TableContainer,Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
+  Select, } from '@chakra-ui/react';
 
 
 const MarketingAdmin = () => {
@@ -144,52 +153,45 @@ const MarketingAdmin = () => {
                    <h2 className="text-2xl font-bold my-12">
                      Users:
                    </h2>
-                   <Table striped className="relative">
-                     <Table.Head>
-                       <Table.HeadCell className="text-start">
-                         Name
-                       </Table.HeadCell>
-                       <Table.HeadCell className="text-start">
-                         Email
-                       </Table.HeadCell>
-                       <Table.HeadCell className="text-start">
-                         Role
-                       </Table.HeadCell>
-                       <Table.HeadCell className="text-start">
-                        Select Role
-                       </Table.HeadCell>
-                       <Table.HeadCell className="text-start">
-                        Change Role
-                       </Table.HeadCell>
-                     </Table.Head>
-                     <Table.Body className="divide-y">
-                       {data?.map((item) => (
-                         <Table.Row className="bg-gray-100" key={item?._id}>
-                           <Table.Cell>{item.name}</Table.Cell>
-                           <Table.Cell className="whitespace-wrap font-bold  min-w-[200px]">
-                             {item.email}
-                           </Table.Cell>
-                           <Table.Cell>{item.role}</Table.Cell>
-                           <Table.Cell>
-                            <select name="changeRole" id=""
+                  <TableContainer>
+                    <Table variant='striped' colorScheme='orange'>
+                      <TableCaption>User</TableCaption>
+                      <Thead>
+                        <Tr>
+                          <Th>Name</Th>
+                          <Th>Email</Th>
+                          <Th>Role</Th>
+                          <Th>Select Role</Th>
+                          <Th>Change Role</Th>
+                        </Tr>
+                      </Thead>
+                      <Tbody>
+                        {
+                          data?.map(item => (
+                            <Tr key={item._id}>
+                              <Td>{item.name}</Td>
+                              <Td>{item.email}</Td>
+                              <Td>{item.role}</Td>
+                              <Td> <Select placeholder='Select option' name="changeRole" id=""
+                              size='md'
+                              variant='filled'
                             onChange={(e)=> setRole({role: e.target.value})}
                             >
                             <option value="NewUser">New User</option>
                             <option value="LeadCollector">Lead Collector</option>
                             <option value="Caller">Caller</option>
 
-                            </select>
-                            </Table.Cell>
-                            <Table.Cell>
-                              <button
+                            </Select></Td>
+                              <Td><button
                               className='py-1.5 px-5 rounded-md hover:bg-primary hover:text-white duration-300 cursor-pointer'
                               onClick={() => handleRoleChange(item._id)}
-                              >Change</button>
-                            </Table.Cell>
-                         </Table.Row>
-                       ))}
-                     </Table.Body>
-                   </Table>
+                              >Change</button></Td>
+                            </Tr>
+                          ))
+                        }
+                      </Tbody>
+                    </Table>
+                  </TableContainer>
                  </>
                )}
              </>

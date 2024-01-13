@@ -3,6 +3,7 @@ import axios from "axios";
 import BarChart from "../../components/Dashboard/BarChart";
 import Loader from "../../components/common/Loader";
 import { Pie } from "react-chartjs-2";
+import { Stat, StatLabel, StatNumber } from "@chakra-ui/react";
 
 
 const options = {
@@ -65,8 +66,6 @@ const CallerDashboard = () => {
     }
   })
 
-console.log(todayCallCount, lastWeekCallCount,thisMonthCallCount, thisYearCallCount, weeklyDayWiseCallCount, weekWiseCallCount, monthWiseCallCount)
-
   const dayWiseCounts = weeklyDayWiseCallCount?.map(item => item.weeklyDayWiseCallCount)
 
   const weekWiseCount = weekWiseCallCount?.map(item => item.weekWiseCallCount)
@@ -80,11 +79,11 @@ console.log(todayCallCount, lastWeekCallCount,thisMonthCallCount, thisYearCallCo
   console.log(dayWiseCounts, weekWiseCount, monthWiseCount, dayDate, monthStartDate)
 
   const dayWiseData = {
-    labels: dayDate.map(date => new Date(date).toLocaleDateString()),
+    labels: dayDate?.map(date => new Date(date).toLocaleDateString()),
     datasets: [
       {
         label: 'Call Made',
-        data: dayWiseCounts.map(String),
+        data: dayWiseCounts?.map(String),
         backgroundColor: [
           'rgba(255, 99, 132, 0.5)',
           'green',
@@ -102,7 +101,7 @@ console.log(todayCallCount, lastWeekCallCount,thisMonthCallCount, thisYearCallCo
     datasets: [
       {
         label: 'Call Made',
-        data: weekWiseCount.map(String),
+        data: weekWiseCount?.map(String),
         backgroundColor: [
           'rgba(255, 99, 132, 0.5)',
           'green',
@@ -120,7 +119,7 @@ console.log(todayCallCount, lastWeekCallCount,thisMonthCallCount, thisYearCallCo
     datasets: [
       {
         label: 'Call Made',
-        data: monthWiseCount.map(String),
+        data: monthWiseCount?.map(String),
         backgroundColor: [
           'rgba(255, 99, 132, 0.5)',
           'green',
@@ -140,12 +139,44 @@ console.log(todayCallCount, lastWeekCallCount,thisMonthCallCount, thisYearCallCo
   return (
     <div className="my-12 md:my-20">
       <div className="container mx-auto px-4">
-        {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 justify-center text-center items-center mb-32 gap-5 text-2xl">
-          <h4 className=" font-semibold bg-slate-400 px-8 py-14 rounded-lg">Today's Lead Collection: {sameDayLeadCount?.todayLeadCount}</h4> 
-          <h4 className=" font-semibold bg-slate-400 px-8 py-14 rounded-lg">This week Lead Collection: {lastWeekLeadCount?.lastWeekLeadCount}</h4>
-          <h4 className=" font-semibold bg-slate-400 px-8 py-14 rounded-lg">This Month Lead Collection: {thisMonthLead?.thisMonthLeadCount}</h4>
-          <h4 className=" font-semibold bg-slate-400 px-8 py-14 rounded-lg">This Year Lead Collection: {thisYearLead?.thisYearLeadCount}</h4>
-        </div> */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 justify-center text-center items-center mb-32 gap-5 text-2xl">
+        <Stat  variant='outline'
+          border='2px'
+          borderColor='pink'
+          borderRadius='10px'
+          py='25px'
+          >
+            <StatLabel>Today's Call</StatLabel>
+            <StatNumber>{todayCallCount?.todayCallCount}</StatNumber>
+          </Stat>
+          <Stat  variant='outline'
+          border='2px'
+          borderColor='pink'
+          borderRadius='10px'
+          py='25px'
+          >
+            <StatLabel>This week Call</StatLabel>
+            <StatNumber>{lastWeekCallCount?.lastWeekCallCount}</StatNumber>
+          </Stat>
+          <Stat  variant='outline'
+          border='2px'
+          borderColor='pink'
+          borderRadius='10px'
+          py='25px'
+          >
+            <StatLabel>This Month Call</StatLabel>
+            <StatNumber>{thisMonthCallCount?.thisMonthCallCount}</StatNumber>
+          </Stat>
+          <Stat  variant='outline'
+          border='2px'
+          borderColor='pink'
+          borderRadius='10px'
+          py='25px'
+          >
+            <StatLabel>This Year Call</StatLabel>
+            <StatNumber>{thisYearCallCount?.thisYearCallCount}</StatNumber>
+          </Stat>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
           <div className="flex flex-col items-center gap-5">
           <h4 className="text-center font-bold text-2xl">Weekly Day Wise Call Made</h4>
@@ -161,7 +192,7 @@ console.log(todayCallCount, lastWeekCallCount,thisMonthCallCount, thisYearCallCo
           <BarChart data={weekWiseData} options={options} />
           </div>
           <div className="flex flex-col gap-5 h-96">
-          <h4 className="text-center font-bold text-2xl">Weekly Day Call Made</h4>
+          <h4 className="text-center font-bold text-2xl">Week Wise Call Made</h4>
             <div className="h-72 flex justify-center"><Pie data={weekWiseData} options={options} /></div>
           </div>
           {/* Month wise chart */}

@@ -2,6 +2,7 @@ import {  useState } from 'react';
 import { Link } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import logo from '/images/logo.webp';
+import { Box, Button } from '@chakra-ui/react';
 
 const Navbar = () => {
   const { activeNav, setActiveNav, user, logOut, loading } = useAuth();
@@ -31,33 +32,61 @@ const Navbar = () => {
                 <>
                   <Link
                     to="/"
-                    className={`uppercase hover:bg-black hover:bg-opacity-15 py-4 px-5 duration-500 cursor-pointer ${
+                    className={`${
                       activeNav === 'login' && 'bg-black bg-opacity-15'
                     }`}
                     onClick={() => {
                       setActiveNav('/');
                     }}
                   >
-                    Login
+                    <Box
+                    as='button'
+                    px='20px'
+                    py='16px'
+                    transition='background 0.5s, opacity 0.5s'
+                    cursor='pointer'
+                    textTransform='uppercase'
+                    _hover={{bg:'black', opacity:'0.15'}}
+                    >Login</Box>
+                    
                   </Link>
                   <Link
                     to="/register"
-                    className={`uppercase hover:bg-black hover:bg-opacity-15 py-4 px-5 duration-500 cursor-pointer ${
+                    className={`${
                       activeNav === 'register' && 'bg-black bg-opacity-15'
                     }`}
                     onClick={() => {
                       setActiveNav('register');
                     }}
                   >
-                    Register
+                    <Box
+                    as='button'
+                    px='20px'
+                    py='16px'
+                    transition='background 0.5s, opacity 0.5s'
+                    cursor='pointer'
+                    textTransform='uppercase'
+                    _hover={{bg:'black', opacity:'0.15'}}
+                    >Register</Box>
+                    
                   </Link>
                   <Link  to="/about"
-                    className={`uppercase hover:bg-black hover:bg-opacity-15 py-4 px-5 duration-500 cursor-pointer ${
+                    className={` ${
                       activeNav === 'about' && 'bg-black bg-opacity-15'
                     }`}
                     onClick={() => {
                       setActiveNav('about');
-                    }}>About</Link>
+                    }}>
+                      <Box
+                    as='button'
+                    px='20px'
+                    py='16px'
+                    transition='background 0.5s, opacity 0.5s'
+                    cursor='pointer'
+                    textTransform='uppercase'
+                    _hover={{bg:'black', opacity:'0.15'}}
+                    >About</Box>
+                      </Link>
                 </>
               ) : (
                 <div
