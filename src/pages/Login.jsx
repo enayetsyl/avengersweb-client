@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
@@ -79,6 +79,21 @@ const [loading, setLoading] = useState(false)
     }
   };
 
+  const containerVariants = {
+    hidden: {
+      opacity:0,
+    },
+    visible: {
+      opacity: 1, 
+      transition: { duration: 1.5}
+    },
+    exit: {
+      x:'-100vw',
+      transition: {ease: 'easeInOut'}
+    }
+  }
+  
+
   useEffect(() => {
     setTimeout(() => {
       setShowModal(true)
@@ -86,7 +101,11 @@ const [loading, setLoading] = useState(false)
   },[setShowModal])
 
   return (
-    <section className="bg-gradient-to-r from-orange-500 to-pink-500 min-h-screen flex justify-center items-center">
+<motion.div variants={containerVariants}
+    initial='hidden'
+    animate='visible'
+    exit='exit'>
+<section className="bg-gradient-to-r from-orange-500 to-pink-500 min-h-screen flex justify-center items-center">
       <div className="container mx-auto px-4">
          <Modal showModal={showModal} setShowModal={setShowModal}/>
         <div className="shadow-xl p-6 md:p-12 rounded-xl min-h-[600px] max-w-[600px] bg-white bg-opacity-25 backdrop-blur-md mx-auto">
@@ -175,6 +194,7 @@ transition={{ type: 'spring', stiffness: 50, delay: 2}}
         </div>
       </div>
     </section>
+</motion.div>
   );
 };
 

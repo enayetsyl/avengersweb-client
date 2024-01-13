@@ -6,6 +6,7 @@ import { useMutation } from '@tanstack/react-query';
 import Loader from '../components/common/Loader';
 import { addData } from '../lib/getfunction';
 import useAuth from '../hooks/useAuth';
+import { motion } from "framer-motion"
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -141,8 +142,28 @@ const Register = () => {
     }
   };
 
+  const containerVariants = {
+    hidden: {
+      opacity:0,
+    },
+    visible: {
+      opacity: 1, 
+      transition: {delay: 0.5, duration: 1.5}
+    },
+    exit: {
+      x:'-100vw',
+      transition: {ease: 'easeInOut'}
+    }
+  }
+
   return (
-    <section className="bg-gradient-to-r from-orange-500 to-pink-500 min-h-screen flex justify-center items-center">
+   <motion.div
+   variants={containerVariants}
+    initial='hidden'
+    animate='visible'
+    exit='exit'
+   >
+     <section className="bg-gradient-to-r from-orange-500 to-pink-500 min-h-screen flex justify-center items-center">
       <div className="container mx-auto px-4">
         <div className="shadow-xl p-6 md:p-12 rounded-xl min-h-[600px] max-w-[600px] bg-white bg-opacity-25 backdrop-blur-md mx-auto">
           <form
@@ -243,6 +264,7 @@ const Register = () => {
         </div>
       </div>
     </section>
+   </motion.div>
   );
 };
 

@@ -22,6 +22,11 @@ import MarketingDashboard from '../marketing/pages/MarketingDashboard';
 import CallerDashboard from '../marketing/pages/CallerDashboard';
 import DeveloperDashboard from '../development/DeveloperDashboard';
 import About from '../pages/About';
+import AnimatedRoute from '../components/common/AnimatedRoute';
+
+
+
+
 
 const router = createBrowserRouter([
   {
@@ -30,15 +35,15 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Login />,
+        element: <AnimatedRoute element={<Login />}/>,
       },
       {
         path: '/register',
-        element: <Register />,
+        element: <AnimatedRoute element={<Register />}/>,
       },
       {
         path: '/about',
-        element: <About />,
+        element: <AnimatedRoute element={<About />}/>,
       },
     ],
   },
