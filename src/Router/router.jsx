@@ -21,6 +21,7 @@ import DeveloperEdit from '../development/DeveloperEdit';
 import MarketingDashboard from '../marketing/pages/MarketingDashboard';
 import CallerDashboard from '../marketing/pages/CallerDashboard';
 import DeveloperDashboard from '../development/DeveloperDashboard';
+import About from '../pages/About';
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: '/register',
         element: <Register />,
+      },
+      {
+        path: '/about',
+        element: <About />,
       },
     ],
   },

@@ -5,6 +5,7 @@ export const AuthContext = createContext();
 // eslint-disable-next-line react/prop-types
 const AuthProvider = ({ children }) => {
   const [activeNav, setActiveNav] = useState('home');
+
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
@@ -19,13 +20,6 @@ const AuthProvider = ({ children }) => {
     setLoading(false)
   },[])
   
-  // useEffect(()=> {
-  //   if(!user){
-  //     localStorage.removeItem('token')
-  //   }
-  // },[user])
-
-
   if(loading){
     return <Loader/>
   }

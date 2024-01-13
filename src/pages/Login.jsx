@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
@@ -7,12 +7,14 @@ import { loginUser } from "../lib/getfunction";
 import { motion } from "framer-motion"
 import useAuth from "../hooks/useAuth";
 import axios from "axios";
+import Modal from "../components/common/Modal";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false)
   
 const [loading, setLoading] = useState(false)
   const {  setUser } =  useAuth()
@@ -77,9 +79,16 @@ const [loading, setLoading] = useState(false)
     }
   };
 
+  useEffect(() => {
+    setTimeout(() => {
+      setShowModal(true)
+    }, 7000)
+  },[setShowModal])
+
   return (
     <section className="bg-gradient-to-r from-orange-500 to-pink-500 min-h-screen flex justify-center items-center">
       <div className="container mx-auto px-4">
+         <Modal showModal={showModal} setShowModal={setShowModal}/>
         <div className="shadow-xl p-6 md:p-12 rounded-xl min-h-[600px] max-w-[600px] bg-white bg-opacity-25 backdrop-blur-md mx-auto">
           <form
             className="w-full flex flex-col gap-y-4"
