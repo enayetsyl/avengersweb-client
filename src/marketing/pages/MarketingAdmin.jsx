@@ -12,7 +12,6 @@ import useAuth from '../../hooks/useAuth';
 import { TableContainer,Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
@@ -30,7 +29,7 @@ const MarketingAdmin = () => {
   const email= user?.email
  
   // Fetching data
-  const {data, isLoading, isError} = useQuery({
+  const {data, isLoading} = useQuery({
   queryKey:['marketingAdminDataFetch', tab],
   queryFn: ()=> fetchData(tab),
  })
@@ -38,7 +37,7 @@ const MarketingAdmin = () => {
  //  Sending data to server after changing role of user
 
  const { mutateAsync } = useMutation({
-  mutationFn:({id, role}) => updateUserRole(id, role),
+  mutationFn:({id, role, email}) => updateUserRole(id, role, email),
   onSuccess:(data) => {
     if(data.modifiedCount > 0){
       toast.success('Role updated Successfully')
@@ -74,7 +73,7 @@ const MarketingAdmin = () => {
  //  handler of the user role change
  const handleRoleChange = async (id) => {
    if(role){
-     await mutateAsync({id, role})   
+     await mutateAsync({id, role, email})   
    }else{
      toast.warning('No role selected')
    }

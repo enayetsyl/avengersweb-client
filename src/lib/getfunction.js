@@ -18,8 +18,12 @@ export const addData = async (name,
   }
 };
 
-export const updateUserRole = async(id, role) => {
-  const result = await axios.patch(`http://localhost:5000/api/v1/userRoleChange/${id}`, role) 
+export const updateUserRole = async(id, role, email) => {
+  const result = await axios.patch(`http://localhost:5000/api/v1/userRoleChange/${id}?email=${email}`, role, {
+    headers: {
+      authorization: `Bearer ${sessionStorage.getItem('token')}`
+    }
+  }) 
   return result.data
 }
 

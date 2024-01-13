@@ -2,7 +2,8 @@ import {  useState } from 'react';
 import { Link } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import logo from '/images/logo.webp';
-import { Box, Button } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
+import { motion } from "framer-motion"
 
 const Navbar = () => {
   const { activeNav, setActiveNav, user, logOut, loading } = useAuth();
@@ -17,6 +18,8 @@ const Navbar = () => {
   const logoutHandler = () => {
     logOut()
   };
+
+ 
 
   return (
     <>
@@ -77,7 +80,18 @@ const Navbar = () => {
                     onClick={() => {
                       setActiveNav('about');
                     }}>
-                      <Box
+                   <motion.div
+                   initial={{scale:0.8, color:'white'}}
+                   animate={{
+                    scale:1.2,
+                    color:'black',
+                    transition:{
+                      duration: 2,
+                      repeat: Infinity,
+                    }
+                   }}
+                   >
+                   <Box
                     as='button'
                     px='20px'
                     py='16px'
@@ -86,6 +100,7 @@ const Navbar = () => {
                     textTransform='uppercase'
                     _hover={{bg:'black', opacity:'0.15'}}
                     >About</Box>
+                   </motion.div>
                       </Link>
                 </>
               ) : (

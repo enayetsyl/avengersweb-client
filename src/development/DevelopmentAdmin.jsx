@@ -25,7 +25,7 @@ const DevelopmentAdmin = () => {
 
   //  Sending data to server after changing role of user
   const { mutateAsync } = useMutation({
-    mutationFn: ({ id, role }) => updateUserRole(id, role),
+    mutationFn: ({ id, role, email }) => updateUserRole(id, role, email),
     onSuccess: (data) => {
       if (data.modifiedCount > 0) {
         toast.success("Role updated Successfully");
@@ -65,7 +65,7 @@ const DevelopmentAdmin = () => {
   //  handler of the user role change
   const handleRoleChange = async (id) => {
     if (role.role) {
-      await mutateAsync({ id, role: role});
+      await mutateAsync({ id, role: role, email});
     } else {
       toast.warning("No role selected");
     }
